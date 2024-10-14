@@ -1,7 +1,9 @@
+import { fetchP2pQuakeHistoryResponseDto } from 'src/application/dto/quakeHistoryDto';
 import { RESPONSE_MESSAGE_TRIGGER } from 'src/config/constants';
+import { PointsScale } from '../enum/quakeHistory/pointsEnum';
 
 /**
- * Extract prefecture name from received text.
+ * Extract prefecture name from received text
  * @param text received text
  * @return extracted prefecture name
  */
@@ -11,7 +13,7 @@ export const extractPrefectureName = (text: string): string | null => {
 };
 
 /**
- * Extract seismic intensity from received text.
+ * Extract seismic intensity from received text
  * @param text received text
  * @return extracted seismic intensity
  */
@@ -20,4 +22,27 @@ export const extractSeismicIntensity = (text: string): string | null => {
     RESPONSE_MESSAGE_TRIGGER.QUAKE_SEISMIC_INTENSITY_REGEX,
   );
   return match ? match[1] : null;
+};
+
+/**
+ * Extract prefectures by points
+ * @param history Quake history object
+ * @returns prefectures
+ */
+export const extractPrefecturesByPoints = async (
+  history: fetchP2pQuakeHistoryResponseDto,
+): Promise<string[]> => {
+  const prefectures: string[] = [];
+
+  if (history.points) {
+    history.points
+      .filter((point) => point.scale >= PointsScale.SCALE10)
+      .forEach((point) => {
+        if (!prefectures.includes(point.pref)) {
+          prefectures.push(point.pref);
+        }
+      });
+  }
+
+  return prefectures;
 };

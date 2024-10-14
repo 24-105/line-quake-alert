@@ -1,4 +1,5 @@
 import { TextMessage, WebhookEvent, MessageEvent } from '@line/bot-sdk';
+import { LINE_EVENT_TYPE, LINE_MESSAGE_TYPE } from 'src/config/constants';
 
 /**
  * Type guard to check if the event is a MessageEvent
@@ -6,7 +7,7 @@ import { TextMessage, WebhookEvent, MessageEvent } from '@line/bot-sdk';
  * @returns true: MessageEvent, false: not MessageEvent
  */
 export const isMessageEvent = (event: WebhookEvent): event is MessageEvent => {
-  return event.type === 'message';
+  return event.type === LINE_EVENT_TYPE.MESSAGE;
 };
 
 /**
@@ -15,5 +16,5 @@ export const isMessageEvent = (event: WebhookEvent): event is MessageEvent => {
  * @returns true: TextMessage, false: not TextMessage
  */
 export const isTextMessage = (message: any): message is TextMessage => {
-  return message.type === 'text';
+  return message.type === LINE_MESSAGE_TYPE.TEXT;
 };

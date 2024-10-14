@@ -1,8 +1,12 @@
-export const QUAKE_HISTORY_VALID_TIME = 60 * 3; // 3 minutes
-export const QUAKE_ID_VALID_TIME = 60 * 5; // 5 minutes
+// export const QUAKE_HISTORY_VALID_TIME = 60 * 1; // 1 minutes
+export const QUAKE_HISTORY_VALID_TIME = 60 * 60 * 24 * 365;
+export const QUAKE_ID_VALID_TIME = 60 * 2; // 2 minutes
 
 export const CHANNEL_ACCESS_TOKEN_VALID_TIME = 60 * 60 * 24 * 3; // 3 days
 export const JWT_EXPIRATION_TIME = 60 * 60 * 24 * 30; // 30 days
+
+export const PRIVATE_KEY_FILE_PATH = 'key/private.key';
+export const ADMIN_PRIVATE_KEY_FILE_PATH = 'key/admin-private.key';
 
 export const P2P_GET_QUAKE_HISTORY_URL = 'https://api.p2pquake.net/v2/history';
 export const P2P_GET_QUAKE_HISTORY_CODE = 551;
@@ -16,9 +20,20 @@ export const LINE_API_GET_USER_PROFILE_URL =
 export const LINE_API_PUSH_MESSAGE_URL =
   'https://api.line.me/v2/bot/message/push';
 
-export const QUAKE_HISTORY_TABLE_NAME = 'QuakeHistory';
-export const CHANNEL_ACCESS_TOKEN_TABLE_NAME = 'ChannelAccessToken';
-export const USERS_TABLE_NAME = 'Users';
+export const YAHOO_WEATHER_JP_EARTHQUAKE =
+  'https://typhoon.yahoo.co.jp/weather/jp/earthquake/';
+
+export const LINE_SIGNATURE_HEADER = 'x-line-signature';
+
+export const LINE_EVENT_TYPE = {
+  MESSAGE: 'message',
+  FOLLOW: 'follow',
+  UNFOLLOW: 'unfollow',
+};
+
+export const LINE_MESSAGE_TYPE = {
+  TEXT: 'text',
+};
 
 export const RESPONSE_MESSAGE_TRIGGER = {
   WHERE_YOU_LIVE_REGEX:
@@ -28,4 +43,20 @@ export const RESPONSE_MESSAGE_TRIGGER = {
   CONTACT_ME_BY_CHAT_REGEX: /チャットで問い合わせます。$/,
 };
 
-export const ENCRYPTION_ALGORITHM = 'aes-256-gcm';
+export const QUAKE_ALT_MESSAGE = 'お住まいの地域で地震が発生しました。';
+
+export const QUAKE_HISTORY_TABLE_NAME = 'QuakeHistory';
+export const CHANNEL_ACCESS_TOKEN_TABLE_NAME = 'ChannelAccessToken';
+
+export const ENCRYPTION_ALGORITHM_AES_256_GCM = 'aes-256-gcm';
+export const ENCRYPTION_HASH_ALGORITHM_SHA256 = 'sha256';
+export const SIGNATURE_ALGORITHM_RS256 = 'RS256';
+
+export const JWT_FORMAT_COMPACT = 'compact';
+
+export const BASE64 = 'base64';
+export const JWT = 'JWT';
+export const UTF8 = 'utf8';
+export const HEX = 'hex';
+
+export const JAPAN_TIMEZONE = 'Asia/Tokyo';

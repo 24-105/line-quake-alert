@@ -13,8 +13,8 @@ import {
 
 // Log message constants
 const LOG_MESSAGES = {
-  PUT_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to put channel access token: ',
-  GET_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to get channel access token: ',
+  PUT_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to put channel access token',
+  GET_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to get channel access token',
 };
 
 /**
@@ -33,7 +33,7 @@ export class ChannelAccessTokenRepository
   }
 
   /**
-   * Create an Amazon DynamoDB service client object.
+   * Create an Amazon DynamoDB service client object
    * @returns DynamoDB service client object
    */
   private createDynamoDbClient(): DynamoDBDocumentClient {
@@ -45,7 +45,7 @@ export class ChannelAccessTokenRepository
   }
 
   /**
-   * Put channel access token in the table.
+   * Put channel access token in the table
    * @param channelId channel id
    * @param channelAccessToken channel access token
    * @param keyId key id
@@ -69,7 +69,7 @@ export class ChannelAccessTokenRepository
       await this.dynamoDbClient.send(new PutCommand(params));
     } catch (err) {
       this.logger.error(
-        `${LOG_MESSAGES.PUT_CHANNEL_ACCESS_TOKEN_FAILED}${channelId}`,
+        `${LOG_MESSAGES.PUT_CHANNEL_ACCESS_TOKEN_FAILED}: ${channelId}`,
         err.stack,
       );
       throw err;
@@ -77,7 +77,7 @@ export class ChannelAccessTokenRepository
   }
 
   /**
-   * Get channel access token from the table.
+   * Get channel access token from the table
    * @param channelId channel id
    * @returns channel access token
    */
@@ -92,7 +92,7 @@ export class ChannelAccessTokenRepository
       return result.Item.channelAccessToken;
     } catch (err) {
       this.logger.error(
-        `${LOG_MESSAGES.GET_CHANNEL_ACCESS_TOKEN_FAILED}${channelId}`,
+        `${LOG_MESSAGES.GET_CHANNEL_ACCESS_TOKEN_FAILED}: ${channelId}`,
         err.stack,
       );
       throw err;

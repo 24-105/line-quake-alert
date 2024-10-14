@@ -8,27 +8,27 @@ import {
 import * as dotenv from 'dotenv';
 import { QUAKE_HISTORY_TABLE_NAME } from '../../config/constants';
 
-// Get execution environment.
+// Get execution environment
 const env = process.env.NODE_ENV;
 
-// Import environment variable file.
+// Import environment variable file
 dotenv.config({ path: `.env.${env}` });
 
-// Get AWS credentials from environment variables.
+// Get AWS credentials from environment variables
 const credentials = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 };
 
-// Create an Amazon DynamoDB service client object.
+// Create an Amazon DynamoDB service client object
 const client = new DynamoDBClient({
   region: process.env.AWS_REGION,
   endpoint: process.env.DYNAMODB_ENDPOINT,
   credentials: credentials,
 });
 
-// Create quake history table.
-const createTable = async () => {
+// Create quake history table
+const createTable = async (): Promise<void> => {
   const params = {
     AttributeDefinitions: [
       { AttributeName: 'quakeId', AttributeType: ScalarAttributeType.S },
@@ -51,8 +51,8 @@ const createTable = async () => {
   }
 };
 
-// Enable TTL.
-const enableTTL = async () => {
+// Enable TTL
+const enableTTL = async (): Promise<void> => {
   const params = {
     TableName: QUAKE_HISTORY_TABLE_NAME,
     TimeToLiveSpecification: {
@@ -70,8 +70,8 @@ const enableTTL = async () => {
   }
 };
 
-// Build quake history table.
-const setupQuakeHistoryTable = async () => {
+// Build quake history table
+const setupQuakeHistoryTable = async (): Promise<void> => {
   await createTable();
   await enableTTL();
 };

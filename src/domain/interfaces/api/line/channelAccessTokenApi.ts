@@ -1,4 +1,4 @@
-import { fetchChannelAccessTokenResponseDto } from 'src/application/dto/channelAccessTokenDto';
+import { IssueChannelAccessTokenResponse } from '@line/bot-sdk/dist/channel-access-token/api';
 
 /**
  * LINE Channel access token API interface
@@ -6,6 +6,6 @@ import { fetchChannelAccessTokenResponseDto } from 'src/application/dto/channelA
 export interface IChannelAccessTokenApi {
   fetchChannelAccessToken(
     jwt: string,
-  ): Promise<fetchChannelAccessTokenResponseDto>;
+  ): Promise<IssueChannelAccessTokenResponse>;
   verifyChannelAccessToken(channelAccessToken: string): Promise<boolean>;
 }

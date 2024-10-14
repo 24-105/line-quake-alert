@@ -1,10 +1,11 @@
+import { PushMessageRequest } from '@line/bot-sdk/dist/messaging-api/model/pushMessageRequest';
+
 /**
  * LINE Message API interface
  */
 export interface IMessageApi {
   pushMessage(
     channelAccessToken: string,
-    to: string,
-    messages: { type: string; text: string }[],
+    message: PushMessageRequest,
   ): Promise<void>;
 }

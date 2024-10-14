@@ -1,23 +1,20 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Logger, Res } from '@nestjs/common';
 import { Response } from 'express';
-
-// Log message constants
-const LOG_MESSAGES = {
-  APP_RUNNING: 'Quake Alert backend application is running.',
-};
 
 /**
  * HealthCheck controller
  */
 @Controller('/health')
 export class HealthCheckController {
+  private readonly logger = new Logger(HealthCheckController.name);
+
   /**
-   * Handling backend application health check.
+   * Handling health check
    * @param res response
    */
   @Get()
-  handleWebhook(@Res() res: Response): void {
-    // Returns status code 200.
-    res.status(200).send(LOG_MESSAGES.APP_RUNNING);
+  handleHealthCheck(@Res() res: Response): void {
+    this.logger.log('Handling health check.');
+    res.status(200).send('OK');
   }
 }

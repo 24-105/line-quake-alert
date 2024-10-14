@@ -4,22 +4,21 @@ import { ChannelAccessTokenRepository } from 'src/infrastructure/repositories/ch
 import { generateJwt } from 'src/domain/useCase/jwt';
 import { ChannelAccessTokenApi } from 'src/infrastructure/api/line/channelAccessTokenApi';
 import { readKeyFile } from 'src/domain/useCase/file';
+import {
+  ADMIN_PRIVATE_KEY_FILE_PATH,
+  PRIVATE_KEY_FILE_PATH,
+} from 'src/config/constants';
 
 // Log message constants
 const LOG_MESSAGES = {
-  REQUEST_PROCESS_CHANNEL_ACCESS_TOKEN:
-    'Requesting process channel access token.',
-  GENERATE_JWT: 'Trying to generate JWT.',
-  GENERATE_ADMIN_JWT: 'Trying to generate admin JWT.',
-  GENERATE_JWT_FAILED: 'Failed to generate JWT.',
-  GENERATE_JWT_ADMIN_FAILED: 'Failed to generate admin JWT.',
-  FETCH_CHANNEL_ACCESS_TOKEN: 'Trying to fetch channel access token.',
-  FETCH_CHANNEL_ACCESS_TOKEN_SUCCESS:
-    'Successfully fetched channel access token.',
-  FETCH_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to fetch channel access token.',
-  UPDATE_CHANNEL_ACCESS_TOKEN_SUCCESS:
-    'Successfully updated channel access token.',
-  UPDATE_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to update channel access token.',
+  PROCESS_CHANNEL_ACCESS_TOKEN: 'Process channel access token',
+  GENERATE_JWT: 'Trying to generate JWT',
+  GENERATE_ADMIN_JWT: 'Trying to generate admin JWT',
+  GENERATE_JWT_FAILED: 'Failed to generate JWT',
+  GENERATE_JWT_ADMIN_FAILED: 'Failed to generate admin JWT',
+  FETCH_CHANNEL_ACCESS_TOKEN: 'Trying to fetch channel access token',
+  FETCH_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to fetch channel access token',
+  UPDATE_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to update channel access token',
 };
 
 /**
@@ -35,19 +34,18 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
   ) {}
 
   /**
-   * Process channel access token.
+   * Process channel access token
    */
   async processChannelAccessToken(): Promise<void> {
-    this.logger.log(LOG_MESSAGES.REQUEST_PROCESS_CHANNEL_ACCESS_TOKEN);
+    this.logger.log(LOG_MESSAGES.PROCESS_CHANNEL_ACCESS_TOKEN);
 
     // read private key file
-    const privateKey = readKeyFile('key/private.key');
-    const adminPrivateKey = readKeyFile('key/admin-private.key');
+    const privateKey = readKeyFile(PRIVATE_KEY_FILE_PATH);
+    const adminPrivateKey = readKeyFile(ADMIN_PRIVATE_KEY_FILE_PATH);
 
     try {
       const jwtList = await this.generateJwts(privateKey, adminPrivateKey);
       await this.updateChannelAccessTokens(jwtList);
-      this.logger.log(LOG_MESSAGES.UPDATE_CHANNEL_ACCESS_TOKEN_SUCCESS);
     } catch (err) {
       this.logger.error(
         LOG_MESSAGES.UPDATE_CHANNEL_ACCESS_TOKEN_FAILED,
@@ -58,11 +56,12 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
   }
 
   /**
-   * Get latest channel access token.
+   * Get latest channel access token
+   * @param channelIss channel iss
    * @returns channel access token
    */
-  async getLatestChannelAccessToken(): Promise<string> {
-    const channelAccessToken = await this.fetchChannelAccessToken();
+  async getLatestChannelAccessToken(channelIss: string): Promise<string> {
+    const channelAccessToken = await this.getChannelAccessToken(channelIss);
     const isValidToken =
       await this.verifyChannelAccessToken(channelAccessToken);
 
@@ -70,20 +69,22 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
       return channelAccessToken;
     }
 
-    return await this.refreshChannelAccessToken();
+    return await this.refreshChannelAccessToken(channelIss);
   }
+
   /**
-   * Fetch channel access token from repository.
+   * Get channel access token from repository
+   * @param channelIss channel iss
    * @returns channel access token
    */
-  private async fetchChannelAccessToken(): Promise<string> {
+  private async getChannelAccessToken(channelIss: string): Promise<string> {
     return await this.channelAccessTokenRepository.getChannelAccessToken(
-      process.env.LINE_QUALE_QUICK_ALERT_ADMIN_ISS,
+      channelIss,
     );
   }
 
   /**
-   * Verify if the channel access token is valid.
+   * Verify if the channel access token is valid
    * @param token channel access token
    * @returns true if valid, false otherwise
    */
@@ -92,19 +93,19 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
   }
 
   /**
-   * Refresh the channel access token.
+   * Refresh the channel access token
    * @returns new channel access token
    */
-  private async refreshChannelAccessToken(): Promise<string> {
+  private async refreshChannelAccessToken(channelIss: string): Promise<string> {
     await this.processChannelAccessToken();
-    return await this.fetchChannelAccessToken();
+    return await this.getChannelAccessToken(channelIss);
   }
 
   /**
-   * Generate JWTs for both regular and admin.
+   * Generate JWTs for both regular and admin
    * @param privateKey Private key
    * @param adminPrivateKey Admin private key
-   * @returns List of JWTs
+   * @returns JWTs
    */
   private async generateJwts(
     privateKey: string,
@@ -144,8 +145,8 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
   }
 
   /**
-   * Update channel access tokens using the generated JWTs.
-   * @param jwtList List of JWTs
+   * Update channel access tokens using the generated JWTs
+   * @param jwtList JWTs
    */
   private async updateChannelAccessTokens(
     jwtList: { jwt: string; iss: string }[],
@@ -160,7 +161,6 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
           tokenResponse.access_token,
           tokenResponse.key_id,
         );
-        this.logger.log(LOG_MESSAGES.FETCH_CHANNEL_ACCESS_TOKEN_SUCCESS);
       } catch (err) {
         this.logger.error(
           LOG_MESSAGES.FETCH_CHANNEL_ACCESS_TOKEN_FAILED,

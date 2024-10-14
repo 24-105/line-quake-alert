@@ -2,12 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { join } from 'path';
-import { HttpExceptionFilter } from './filters/httpExceptionFilter';
+import { HttpExceptionFilter } from './application/filters/httpExceptionFilter';
 
 /**
- * NestJSアプリケーションの起動
+ * NestJS application bootstrap
  */
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useStaticAssets(join(__dirname, '..', 'public'));

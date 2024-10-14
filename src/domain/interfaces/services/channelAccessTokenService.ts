@@ -3,5 +3,5 @@
  */
 export interface IChannelAccessTokenService {
   processChannelAccessToken(): Promise<void>;
-  getLatestChannelAccessToken(): Promise<string>;
+  getLatestChannelAccessToken(channelIss: string): Promise<string>;
 }

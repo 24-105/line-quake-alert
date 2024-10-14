@@ -12,12 +12,12 @@ import { PointsScale } from '../enum/quakeHistory/pointsEnum';
 @Entity()
 @Unique(['user_id'])
 @Index(['prefecture', 'threshold_seismic_intensity'])
-export class Users {
+export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  user_id: number;
+  user_id: string;
 
   @Column({ nullable: true })
   prefecture: number | null;

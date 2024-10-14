@@ -1,33 +1,31 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { IChannelAccessTokenBatchService } from 'src/domain/interfaces/services/channelAccessTokenBatchService';
-import { ChannelAccessTokenService } from './channelAccessTokenService';
+import { ChannelAccessTokenService } from '../services/channelAccessTokenService';
+import { IChannelAccessTokenBatchJob } from 'src/domain/interfaces/jobs/channelAccessTokenBatchJob';
 
 // Log message constants
 const LOG_MESSAGES = {
   START_PROCESS_CHANNEL_ACCESS_TOKEN_BATCH:
-    'Start process channel access token batch.',
+    'Start process channel access token batch',
   PROCESS_CHANNEL_ACCESS_TOKEN_BATCH_SUCCESS:
-    'Successfully processed channel access token.',
+    'Successfully processed channel access token',
   PROCESS_CHANNEL_ACCESS_TOKEN_BATCH_FAILED:
-    'Failed to process channel access token.',
+    'Failed to process channel access token',
 };
 
 /**
- * Channel access token batch service
+ * Channel access token batch job
  */
 @Injectable()
-export class ChannelAccessTokenBatchService
-  implements IChannelAccessTokenBatchService
-{
-  private readonly logger = new Logger(ChannelAccessTokenBatchService.name);
+export class ChannelAccessTokenBatchJob implements IChannelAccessTokenBatchJob {
+  private readonly logger = new Logger(ChannelAccessTokenBatchJob.name);
 
   constructor(
     private readonly channelAccessTokenService: ChannelAccessTokenService,
   ) {}
 
   /**
-   * Batch process to fetch and update channel access token.
+   * Batch process to fetch and update channel access token
    */
   // @Cron(CronExpression.EVERY_10_SECONDS)
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)

@@ -70,7 +70,7 @@ class QuakeHistoryEarthquake {
 }
 
 // Quake history points
-class QuakeHistoryPoints {
+export class QuakeHistoryPoints {
   @IsNotEmpty()
   @IsString()
   pref: string;

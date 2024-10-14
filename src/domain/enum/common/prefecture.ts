@@ -1,3 +1,6 @@
+/**
+ * Prefecture Enum
+ */
 export enum Prefecture {
   北海道 = 1,
   青森県 = 2,

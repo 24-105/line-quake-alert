@@ -3,32 +3,29 @@ import { Injectable, Logger } from '@nestjs/common';
 import { RESPONSE_MESSAGE_TRIGGER } from 'src/config/constants';
 import { IMessageEventService } from 'src/domain/interfaces/services/messageEventService';
 import { isMessageEvent, isTextMessage } from 'src/domain/useCase/webhookEvent';
-import { MessageApi } from 'src/infrastructure/api/line/messageApi';
 import { UserApi } from 'src/infrastructure/api/line/userApi';
 import { ChannelAccessTokenService } from './channelAccessTokenService';
-import { createContactTextMessage } from 'src/domain/useCase/textMessage';
 import { UserService } from './userService';
 import {
   extractPrefectureName,
   extractSeismicIntensity,
 } from 'src/domain/useCase/extractText';
+import { createTextMessage } from 'src/domain/useCase/textMessage';
+import { PushMessageService } from './pushMessageService';
+import { createCorrespondingMessage } from 'src/domain/useCase/customMessage';
 
 // Log message constants
 const LOG_MESSAGES = {
-  NOT_MESSAGE_EVENT: 'This is not a MessageEvent.',
-  MESSAGE_TYPE_NOT_SUPPORTED: 'Message types not supported.',
-  TEXT_NOT_SUPPORTED: 'Text not supported.',
-  HANDLING_WHERE_YOU_LIVE: 'Handling where you live.',
-  HANDLING_WHERE_YOU_LIVE_SUCCESS: 'Handling where you live success.',
-  HANDLING_WHERE_YOU_LIVE_FAILED: 'Handling where you live failed.',
-  HANDLING_QUAKE_SEISMIC_INTENSITY: 'Handling quake seismic intensity.',
-  HANDLING_QUAKE_SEISMIC_INTENSITY_SUCCESS:
-    'Handling quake seismic intensity success.',
+  NOT_MESSAGE_EVENT: 'This is not a MessageEvent',
+  MESSAGE_NOT_SUPPORTED: 'Message not supported',
+  TEXT_NOT_SUPPORTED: 'Text not supported',
+  HANDLING_WHERE_YOU_LIVE: 'Handling where you live',
+  HANDLING_WHERE_YOU_LIVE_FAILED: 'Failed to handling where you live',
+  HANDLING_QUAKE_SEISMIC_INTENSITY: 'Handling quake seismic intensity',
   HANDLING_QUAKE_SEISMIC_INTENSITY_FAILED:
-    'Handling quake seismic intensity failed.',
-  HANDLING_CONTACT_ME_BY_CHAT: 'Handling contact me by chat.',
-  HANDLING_CONTACT_ME_BY_CHAT_SUCCESS: 'Handling contact me by chat success.',
-  HANDLING_CONTACT_ME_BY_CHAT_FAILED: 'Handling contact me by chat failed.',
+    'Failed to handling quake seismic intensity',
+  HANDLING_CONTACT_ME_BY_CHAT: 'Handling contact me by chat',
+  HANDLING_CONTACT_ME_BY_CHAT_FAILED: 'Failed to handling contact me by chat',
 };
 
 /**
@@ -41,29 +38,28 @@ export class MessageEventService implements IMessageEventService {
   constructor(
     private readonly userService: UserService,
     private readonly channelAccessTokenService: ChannelAccessTokenService,
+    private readonly pushMessageService: PushMessageService,
     private readonly userApi: UserApi,
-    private readonly messageApi: MessageApi,
   ) {}
 
   /**
-   * Handle message event.
+   * Handle message event
    * @param event event object
    */
   async handleMessageEvent(event: WebhookEvent): Promise<void> {
     if (!isMessageEvent(event)) {
-      this.logger.error(LOG_MESSAGES.NOT_MESSAGE_EVENT, event.type);
+      this.logger.error(`${LOG_MESSAGES.NOT_MESSAGE_EVENT}: ${event.type}`);
       return;
     }
 
     if (!isTextMessage(event.message)) {
       this.logger.log(
-        LOG_MESSAGES.MESSAGE_TYPE_NOT_SUPPORTED,
-        event.message.type,
+        `${LOG_MESSAGES.MESSAGE_NOT_SUPPORTED}: ${event.message.type}`,
       );
       return;
     }
 
-    // Handle text message.
+    // Handle text message
     const text = event.message.text;
     if (RESPONSE_MESSAGE_TRIGGER.WHERE_YOU_LIVE_REGEX.test(text)) {
       await this.handleWhereYouLive(event.source.userId, text);
@@ -76,15 +72,15 @@ export class MessageEventService implements IMessageEventService {
     }
 
     if (RESPONSE_MESSAGE_TRIGGER.CONTACT_ME_BY_CHAT_REGEX.test(text)) {
-      await this.handleContactMeByChat(event.source.userId, text);
+      await this.sendCorrespondNotice(event.source.userId);
       return;
     }
 
-    this.logger.log(LOG_MESSAGES.TEXT_NOT_SUPPORTED, text);
+    this.logger.log(`${LOG_MESSAGES.TEXT_NOT_SUPPORTED}: ${text}`);
   }
 
   /**
-   * Handle where you live.
+   * Handle where you live
    * @param userId user id
    * @param text received text
    */
@@ -92,14 +88,13 @@ export class MessageEventService implements IMessageEventService {
     userId: string,
     text: string,
   ): Promise<void> {
-    this.logger.log(`${LOG_MESSAGES.HANDLING_WHERE_YOU_LIVE}: ${text}`);
+    this.logger.log(LOG_MESSAGES.HANDLING_WHERE_YOU_LIVE);
     await this.userService.ensureUserIdExists(userId);
 
     try {
       const prefectureName = extractPrefectureName(text);
       if (prefectureName) {
         await this.userService.updateUserPrefecture(userId, prefectureName);
-        this.logger.log(LOG_MESSAGES.HANDLING_WHERE_YOU_LIVE_SUCCESS);
       } else {
         this.logger.error(
           `${LOG_MESSAGES.HANDLING_WHERE_YOU_LIVE_FAILED}: ${text}`,
@@ -115,7 +110,7 @@ export class MessageEventService implements IMessageEventService {
   }
 
   /**
-   * Handle quake seismic intensity.
+   * Handle quake seismic intensity
    * @param userId user id
    * @param text received text
    */
@@ -123,9 +118,7 @@ export class MessageEventService implements IMessageEventService {
     userId: string,
     text: string,
   ): Promise<void> {
-    this.logger.log(
-      `${LOG_MESSAGES.HANDLING_QUAKE_SEISMIC_INTENSITY}: ${text}`,
-    );
+    this.logger.log(LOG_MESSAGES.HANDLING_QUAKE_SEISMIC_INTENSITY);
     await this.userService.ensureUserIdExists(userId);
 
     try {
@@ -135,7 +128,6 @@ export class MessageEventService implements IMessageEventService {
           userId,
           seismicIntensity,
         );
-        this.logger.log(LOG_MESSAGES.HANDLING_QUAKE_SEISMIC_INTENSITY_SUCCESS);
       } else {
         this.logger.error(
           `${LOG_MESSAGES.HANDLING_QUAKE_SEISMIC_INTENSITY_FAILED}: ${text}`,
@@ -151,33 +143,35 @@ export class MessageEventService implements IMessageEventService {
   }
 
   /**
-   * Handle contact me by chat.
+   * Send corresponding message
    * @param userId user id
-   * @param text received text
    */
-  private async handleContactMeByChat(
-    userId: string,
-    text: string,
-  ): Promise<void> {
-    this.logger.log(`${LOG_MESSAGES.HANDLING_CONTACT_ME_BY_CHAT}: ${text}`);
+  private async sendCorrespondNotice(userId: string): Promise<void> {
+    this.logger.log(LOG_MESSAGES.HANDLING_CONTACT_ME_BY_CHAT);
     await this.userService.ensureUserIdExists(userId);
 
     try {
       const channelAccessToken =
-        await this.channelAccessTokenService.getLatestChannelAccessToken();
+        await this.channelAccessTokenService.getLatestChannelAccessToken(
+          process.env.LINE_QUALE_QUICK_ALERT_ADMIN_ISS,
+        );
 
       const userProfile = await this.userApi.fetchUserProfile(
         channelAccessToken,
         userId,
       );
 
-      const message = await createContactTextMessage(userProfile.displayName);
+      const correspondingMessage = createCorrespondingMessage(
+        userProfile.displayName,
+      );
+      const text = await createTextMessage(correspondingMessage);
 
-      await this.messageApi.pushMessage(channelAccessToken, userId, [message]);
-      this.logger.log(LOG_MESSAGES.HANDLING_CONTACT_ME_BY_CHAT_SUCCESS);
+      await this.pushMessageService.pushMessage(channelAccessToken, userId, [
+        text,
+      ]);
     } catch (err) {
       this.logger.error(
-        `${LOG_MESSAGES.HANDLING_CONTACT_ME_BY_CHAT_FAILED}: ${text}`,
+        `${LOG_MESSAGES.HANDLING_CONTACT_ME_BY_CHAT_FAILED}: ${userId}`,
         err.stack,
       );
       throw err;
