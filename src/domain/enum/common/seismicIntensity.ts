@@ -1,3 +1,6 @@
+/**
+ * Seismic intensity enum
+ */
 export enum SeismicIntensityScale {
   震度1 = 10,
   震度2 = 20,

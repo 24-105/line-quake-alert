@@ -6,21 +6,23 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { AdminModule } from './modules/adminModule';
 import { AppDataSource } from './config/dataSource';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ChannelAccessTokenModule } from './modules/channelAccessTokenModule';
 
 /**
  * Application module
  */
 @Module({
   imports: [
-    TypeOrmModule.forRoot(AppDataSource.options), // Added TypeORM settings.
+    TypeOrmModule.forRoot(AppDataSource.options), // Added TypeORM settings
     ConfigModule.forRoot({
-      envFilePath: `.env.${process.env.NODE_ENV}`, // Load files according to the environment.
-      isGlobal: true, // Set globally.
+      envFilePath: `.env.${process.env.NODE_ENV}`, // Load files according to the environment
+      isGlobal: true, // Set globally
     }),
-    ScheduleModule.forRoot(), // Add schedule module.
+    ScheduleModule.forRoot(), // Add schedule module
     AdminModule,
-    QuakeModule,
     LineModule,
+    ChannelAccessTokenModule,
+    QuakeModule,
   ],
 })
 export class AppModule {}

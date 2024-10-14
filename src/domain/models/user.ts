@@ -4,16 +4,16 @@
 export class UserModel {
   id: number;
   userId: string;
-  prefecture: string | null;
-  thresholdSeismicIntensity: string;
+  prefecture: number | null;
+  thresholdSeismicIntensity: number;
   createdAt: Date;
   updatedAt: Date;
 
   constructor(
     id: number,
     userId: string,
-    prefecture: string | null,
-    thresholdSeismicIntensity: string,
+    prefecture: number | null,
+    thresholdSeismicIntensity: number,
     createdAt: Date,
     updatedAt: Date,
   ) {

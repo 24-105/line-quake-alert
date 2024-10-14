@@ -11,6 +11,6 @@ import { User } from 'src/domain/entities/user';
 @Module({
   imports: [EncryptModule, TypeOrmModule.forFeature([User])],
   providers: [UserService, UserRepository],
-  exports: [UserService, UserRepository],
+  exports: [UserService],
 })
 export class UserModule {}

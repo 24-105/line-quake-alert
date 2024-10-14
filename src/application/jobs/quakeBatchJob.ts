@@ -6,10 +6,10 @@ import { QuakeService } from '../services/quakeService';
 
 // Log message constants
 const LOG_MESSAGES = {
-  START_PROCESS_QUAKE_HISTORY_BATCH: 'Start process quake history batch.',
+  START_PROCESS_QUAKE_HISTORY_BATCH: 'Start process quake history batch',
   PROCESS_QUAKE_HISTORY_BATCH_SUCCESS:
-    'Successfully process quake history batch.',
-  PROCESS_QUAKE_HISTORY_BATCH_FAILED: 'Failed to Process quake history batch.',
+    'Successfully process quake history batch',
+  PROCESS_QUAKE_HISTORY_BATCH_FAILED: 'Failed to Process quake history batch',
 };
 
 /**
@@ -22,18 +22,20 @@ export class QuakeBatchJob implements IQuakeBatchJob {
   constructor(private readonly quakeService: QuakeService) {}
 
   /**
-   * Batch process to fetch, save, and notify quake history.
+   * Batch process to fetch, save, and notify quake history
    */
   // @Cron(CronExpression.EVERY_5_SECONDS)
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async processQuakeHistoryBatch(): Promise<void> {
+    this.logger.log(LOG_MESSAGES.START_PROCESS_QUAKE_HISTORY_BATCH);
+
+    // fixed argument
+    const codes = P2P_GET_QUAKE_HISTORY_CODE;
+    const limit = 3;
+    const offset = 0;
+
     //TODO 後で消す
     const startTime = performance.now();
-
-    this.logger.log(LOG_MESSAGES.START_PROCESS_QUAKE_HISTORY_BATCH);
-    const codes = P2P_GET_QUAKE_HISTORY_CODE; // fixed argument
-    const limit = 3; // fixed argument
-    const offset = 0; // fixed argument
 
     try {
       await this.quakeService.processQuakeHistory(codes, limit, offset);
@@ -42,9 +44,7 @@ export class QuakeBatchJob implements IQuakeBatchJob {
       //TODO 後で消す
       const endTime = performance.now();
       const duration = endTime - startTime;
-      this.logger.log(
-        `processQuakeHistoryBatch took ${duration} milliseconds.`,
-      );
+      this.logger.log(`processQuakeHistoryBatch took ${duration} milliseconds`);
     } catch (err) {
       this.logger.error(
         LOG_MESSAGES.PROCESS_QUAKE_HISTORY_BATCH_FAILED,

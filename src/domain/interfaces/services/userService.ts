@@ -1,7 +1,7 @@
 import { User } from 'src/domain/entities/user';
 
 /**
- * Interface for the user service.
+ * Interface for the user service
  */
 export interface IUserService {
   getUsersByPrefectures(prefectures: string[]): Promise<User[]>;

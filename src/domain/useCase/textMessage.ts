@@ -1,13 +1,24 @@
-import { getJstTime } from './date';
+import {
+  Emoji,
+  TextMessage,
+} from '@line/bot-sdk/dist/messaging-api/model/models';
 
 /**
- * Create contact text message.
- * @param displayName User display name
- * @returns Contact message
+ * Create text message
+ * @param message text message
+ * @param emoji emojis
+ * @param quoteToken quote token
+ * @returns message
  */
-export const createContactTextMessage = async (displayName: string) => {
+export const createTextMessage = async (
+  message: string,
+  emoji?: Emoji[],
+  quoteToken?: string,
+): Promise<TextMessage> => {
   return {
     type: 'text',
-    text: `${getJstTime()}に ${displayName} 様からお問い合わせがありました。`,
+    text: message,
+    emojis: emoji,
+    quoteToken: quoteToken,
   };
 };

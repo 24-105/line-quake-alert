@@ -6,11 +6,11 @@ import { IChannelAccessTokenBatchJob } from 'src/domain/interfaces/jobs/channelA
 // Log message constants
 const LOG_MESSAGES = {
   START_PROCESS_CHANNEL_ACCESS_TOKEN_BATCH:
-    'Start process channel access token batch.',
+    'Start process channel access token batch',
   PROCESS_CHANNEL_ACCESS_TOKEN_BATCH_SUCCESS:
-    'Successfully processed channel access token.',
+    'Successfully processed channel access token',
   PROCESS_CHANNEL_ACCESS_TOKEN_BATCH_FAILED:
-    'Failed to process channel access token.',
+    'Failed to process channel access token',
 };
 
 /**
@@ -25,7 +25,7 @@ export class ChannelAccessTokenBatchJob implements IChannelAccessTokenBatchJob {
   ) {}
 
   /**
-   * Batch process to fetch and update channel access token.
+   * Batch process to fetch and update channel access token
    */
   // @Cron(CronExpression.EVERY_10_SECONDS)
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)

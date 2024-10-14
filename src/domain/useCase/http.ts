@@ -1,15 +1,15 @@
 import * as crypto from 'crypto';
 
 /**
- * Create headers for the request.
+ * Create headers for the request
  * @returns Headers object
  */
-export const createEncodeHeaders = () => {
+export const createEncodeHeaders = (): Record<string, string> => {
   return { 'Content-Type': 'application/x-www-form-urlencoded' };
 };
 
 /**
- * Create headers for the request.
+ * Create headers for the request
  * @returns Headers object
  */
 export const createHeaders = (): Record<string, string> => {

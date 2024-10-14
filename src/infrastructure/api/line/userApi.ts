@@ -8,9 +8,9 @@ import { createAuthHeaders } from 'src/domain/useCase/http';
 
 // Log message constants
 const LOG_MESSAGES = {
-  REQUEST_USER_PROFILE: 'Requesting user profile from the LINE Messaging API.',
+  REQUEST_USER_PROFILE: 'Requesting user profile from the LINE Messaging API',
   FETCH_USER_PROFILE_FAILED:
-    'Failed to fetch user profile from the LINE Messaging API.',
+    'Failed to fetch user profile from the LINE Messaging API',
 };
 
 /**
@@ -23,7 +23,7 @@ export class UserApi implements IUserApi {
   constructor(private readonly httpService: HttpService) {}
 
   /**
-   * Fetch user profile from LINE Messaging API.
+   * Fetch user profile from LINE Messaging API
    * https://developers.line.biz/ja/reference/messaging-api/#get-profile
    * @param userId User Id
    * @returns user profile
@@ -43,7 +43,10 @@ export class UserApi implements IUserApi {
       );
       return response.data;
     } catch (err) {
-      this.logger.error(LOG_MESSAGES.FETCH_USER_PROFILE_FAILED, err.stack);
+      this.logger.error(
+        `${LOG_MESSAGES.FETCH_USER_PROFILE_FAILED}: ${userId}`,
+        err.stack,
+      );
       throw err;
     }
   }

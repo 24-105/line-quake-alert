@@ -4,10 +4,15 @@ import { WebhookEvent } from '@line/bot-sdk';
 import { ILineWebhookService } from 'src/domain/interfaces/services/lineWebhookService';
 import { MessageEventService } from './messageEventService';
 import { FollowEventService } from './followEventService';
+import {
+  BASE64,
+  ENCRYPTION_HASH_ALGORITHM_SHA256,
+  LINE_EVENT_TYPE,
+} from 'src/config/constants';
 
 // Log message constants
 const LOG_MESSAGES = {
-  EVENT_TYPE_NOT_SUPPORTED: 'Event types not supported.',
+  EVENT_TYPE_NOT_SUPPORTED: 'Event types not supported',
 };
 
 /**
@@ -23,7 +28,7 @@ export class LineWebhookService implements ILineWebhookService {
   ) {}
 
   /**
-   * Verify the signature.
+   * Verify the signature
    * @param body request body
    * @param signature signature
    * @returns true: valid signature, false: invalid signature
@@ -31,15 +36,15 @@ export class LineWebhookService implements ILineWebhookService {
   verifySignature(body: any, signature: string): boolean {
     const channelSecret = process.env.LINE_QUALE_QUICK_ALERT_SECRET;
     const hash = crypto
-      .createHmac('SHA256', channelSecret)
+      .createHmac(ENCRYPTION_HASH_ALGORITHM_SHA256, channelSecret)
       .update(JSON.stringify(body))
-      .digest('base64');
+      .digest(BASE64);
     return hash === signature;
   }
 
   /**
-   * Handle webhook events.
-   * @param events array of webhook events
+   * Handle webhook events
+   * @param events webhook events
    */
   handleEvents(events: WebhookEvent[]): void {
     for (const event of events) {
@@ -48,22 +53,24 @@ export class LineWebhookService implements ILineWebhookService {
   }
 
   /**
-   * Handle a single webhook event.
+   * Handle a single webhook event
    * @param event webhook event
    */
   private handleEvent(event: WebhookEvent): void {
     switch (event.type) {
-      case 'message':
+      case LINE_EVENT_TYPE.MESSAGE:
         this.messageEventService.handleMessageEvent(event);
         break;
-      case 'follow':
+      case LINE_EVENT_TYPE.FOLLOW:
         this.followEventService.handleFollowEvent(event);
         break;
-      case 'unfollow':
+      case LINE_EVENT_TYPE.UNFOLLOW:
         this.followEventService.handleUnfollowEvent(event);
         break;
       default:
-        this.logger.warn(LOG_MESSAGES.EVENT_TYPE_NOT_SUPPORTED, event.type);
+        this.logger.log(
+          `${LOG_MESSAGES.EVENT_TYPE_NOT_SUPPORTED}: ${event.type}`,
+        );
         break;
     }
   }

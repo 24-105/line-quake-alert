@@ -1,8 +1,14 @@
 import * as jose from 'node-jose';
-import { JWT_EXPIRATION_TIME, LINE_API_BASE_URL } from 'src/config/constants';
+import {
+  JWT,
+  JWT_EXPIRATION_TIME,
+  JWT_FORMAT_COMPACT,
+  LINE_API_BASE_URL,
+  SIGNATURE_ALGORITHM_RS256,
+} from 'src/config/constants';
 
 /**
- * Generate JWT.
+ * Generate JWT
  * @param privateKey
  * @param kid
  * @param iss
@@ -16,8 +22,8 @@ export const generateJwt = async (
   sub: string,
 ): Promise<string> => {
   const header = {
-    alg: 'RS256',
-    typ: 'JWT',
+    alg: SIGNATURE_ALGORITHM_RS256,
+    typ: JWT,
     kid: kid,
   };
 
@@ -31,7 +37,7 @@ export const generateJwt = async (
 
   try {
     return await jose.JWS.createSign(
-      { format: 'compact', fields: header },
+      { format: JWT_FORMAT_COMPACT, fields: header },
       JSON.parse(privateKey),
     )
       .update(JSON.stringify(payload))

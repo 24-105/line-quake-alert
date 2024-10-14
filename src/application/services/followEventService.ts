@@ -5,10 +5,10 @@ import { Injectable, Logger } from '@nestjs/common';
 
 // Log message constants
 const LOG_MESSAGES = {
-  HANDLING_FOLLOW_EVENT: 'Handling follow event.',
-  HANDLING_FOLLOW_EVENT_FAILED: 'Failed to handling follow event.',
-  HANDLING_UNFOLLOW_EVENT: 'Handling unfollow event.',
-  HANDLING_UNFOLLOW_EVENT_FAILED: 'Failed to handling unfollow event.',
+  HANDLING_FOLLOW_EVENT: 'Handling follow event',
+  HANDLING_FOLLOW_EVENT_FAILED: 'Failed to handling follow event',
+  HANDLING_UNFOLLOW_EVENT: 'Handling unfollow event',
+  HANDLING_UNFOLLOW_EVENT_FAILED: 'Failed to handling unfollow event',
 };
 
 /**
@@ -21,7 +21,7 @@ export class FollowEventService implements IFollowEventService {
   constructor(private readonly userService: UserService) {}
 
   /**
-   * Handle follow event.
+   * Handle follow event
    * @param event event object
    */
   async handleFollowEvent(event: WebhookEvent): Promise<void> {
@@ -35,7 +35,7 @@ export class FollowEventService implements IFollowEventService {
   }
 
   /**
-   * Handle unfollow event.
+   * Handle unfollow event
    * @param event event object
    */
   async handleUnfollowEvent(event: WebhookEvent): Promise<void> {

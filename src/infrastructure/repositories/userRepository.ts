@@ -8,18 +8,18 @@ import { In, Repository } from 'typeorm';
 const LOG_MESSAGES = {
   GET_USERS: 'Getting users',
   GET_USERS_FAILED: 'Failed to get users',
-  CHECK_USER_ID_EXISTS: 'Checking if user ID exists: ',
-  CHECK_USER_ID_FAILED: 'Failed to check userId: ',
-  PUT_USER_ID: 'Putting new user ID: ',
-  PUT_USER_ID_FAILED: 'Failed to put userId: ',
-  DELETE_USER: 'Deleting user: ',
-  DELETE_USER_FAILED: 'Failed to delete user: ',
-  UPDATE_USER_PREFECTURE: 'User ID to update prefecture: ',
-  UPDATE_USER_PREFECTURE_FAILED: 'Failed to update user prefecture: ',
+  CHECK_USER_ID_EXISTS: 'Checking if user id exists',
+  CHECK_USER_ID_FAILED: 'Failed to check if user id exists',
+  PUT_USER_ID: 'Putting new user id',
+  PUT_USER_ID_FAILED: 'Failed to put userId',
+  DELETE_USER: 'Deleting user',
+  DELETE_USER_FAILED: 'Failed to delete user',
+  UPDATE_USER_PREFECTURE: 'User id to update prefecture',
+  UPDATE_USER_PREFECTURE_FAILED: 'Failed to update user prefecture',
   UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY:
-    'User ID to update threshold_seismic_intensity: ',
+    'User id to update threshold_seismic_intensity',
   UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY_FAILED:
-    'Failed to update user threshold_seismic_intensity: ',
+    'Failed to update user threshold_seismic_intensity',
 };
 
 /**
@@ -35,7 +35,7 @@ export class UserRepository implements IUserRepository {
   ) {}
 
   /**
-   * Get users by prefectures.
+   * Get users by prefectures
    * @param prefectures prefectures
    * @returns Users
    */
@@ -50,18 +50,21 @@ export class UserRepository implements IUserRepository {
       });
       return users;
     } catch (err) {
-      this.logger.error(LOG_MESSAGES.GET_USERS_FAILED, err.stack);
+      this.logger.error(
+        `${LOG_MESSAGES.GET_USERS_FAILED}: ${prefectures}`,
+        err.stack,
+      );
       throw err;
     }
   }
 
   /**
-   * Check if user id exists in the table.
+   * Check if user id exists in the table
    * @param userId user id
    * @returns true: user id exists, false: user id does not exist
    */
   async isUserIdExists(userId: string): Promise<boolean> {
-    this.logger.log(`${LOG_MESSAGES.CHECK_USER_ID_EXISTS}${userId}`);
+    this.logger.log(LOG_MESSAGES.CHECK_USER_ID_EXISTS);
 
     try {
       const user = await this.userRepository.findOne({
@@ -70,7 +73,7 @@ export class UserRepository implements IUserRepository {
       return !!user;
     } catch (err) {
       this.logger.error(
-        `Failed to check if user ID exists: ${userId}`,
+        `${LOG_MESSAGES.CHECK_USER_ID_FAILED}: ${userId}`,
         err.stack,
       );
       throw err;
@@ -78,17 +81,17 @@ export class UserRepository implements IUserRepository {
   }
 
   /**
-   * Put user id in the table.
+   * Put user id in the table
    * @param userId user id
    */
   async putUserId(userId: string): Promise<void> {
-    this.logger.log(`${LOG_MESSAGES.PUT_USER_ID}${userId}`);
+    this.logger.log(LOG_MESSAGES.PUT_USER_ID);
 
     try {
       await this.userRepository.insert({ user_id: userId });
     } catch (err) {
       this.logger.error(
-        `${LOG_MESSAGES.PUT_USER_ID_FAILED}${userId}`,
+        `${LOG_MESSAGES.PUT_USER_ID_FAILED}: ${userId}`,
         err.stack,
       );
       throw err;
@@ -96,17 +99,17 @@ export class UserRepository implements IUserRepository {
   }
 
   /**
-   * Delete user from the table.
+   * Delete user from the table
    * @param userId user id
    */
   async deleteUser(userId: string): Promise<void> {
-    this.logger.log(`${LOG_MESSAGES.DELETE_USER}${userId}`);
+    this.logger.log(LOG_MESSAGES.DELETE_USER);
 
     try {
       await this.userRepository.delete({ user_id: userId });
     } catch (err) {
       this.logger.error(
-        `${LOG_MESSAGES.DELETE_USER_FAILED}${userId}`,
+        `${LOG_MESSAGES.DELETE_USER_FAILED}: ${userId}`,
         err.stack,
       );
       throw err;
@@ -114,7 +117,7 @@ export class UserRepository implements IUserRepository {
   }
 
   /**
-   * Update user prefecture.
+   * Update user prefecture
    * @param userId user id
    * @param prefecture prefecture number
    */
@@ -122,7 +125,7 @@ export class UserRepository implements IUserRepository {
     userId: string,
     prefecture: number,
   ): Promise<void> {
-    this.logger.log(`${LOG_MESSAGES.UPDATE_USER_PREFECTURE}${userId}`);
+    this.logger.log(LOG_MESSAGES.UPDATE_USER_PREFECTURE);
 
     try {
       await this.userRepository.update(
@@ -131,7 +134,7 @@ export class UserRepository implements IUserRepository {
       );
     } catch (err) {
       this.logger.error(
-        `${LOG_MESSAGES.UPDATE_USER_PREFECTURE_FAILED}${userId}`,
+        `${LOG_MESSAGES.UPDATE_USER_PREFECTURE_FAILED}: ${userId}`,
         err.stack,
       );
       throw err;
@@ -147,9 +150,7 @@ export class UserRepository implements IUserRepository {
     userId: string,
     seismicIntensity: number,
   ): Promise<void> {
-    this.logger.log(
-      `${LOG_MESSAGES.UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY}${userId}`,
-    );
+    this.logger.log(LOG_MESSAGES.UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY);
 
     try {
       await this.userRepository.update(
@@ -158,7 +159,7 @@ export class UserRepository implements IUserRepository {
       );
     } catch (err) {
       this.logger.error(
-        `${LOG_MESSAGES.UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY_FAILED}${userId}`,
+        `${LOG_MESSAGES.UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY_FAILED}: ${userId}`,
         err.stack,
       );
       throw err;

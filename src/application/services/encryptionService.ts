@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { BASE64 } from 'src/config/constants';
 import { IEncryptionService } from 'src/domain/interfaces/services/encryptionService';
 import { decrypt, encrypt } from 'src/domain/useCase/encryption';
 
@@ -7,11 +8,11 @@ import { decrypt, encrypt } from 'src/domain/useCase/encryption';
  */
 @Injectable()
 export class EncryptionService implements IEncryptionService {
-  private readonly key = Buffer.from(process.env.ENCRYPTION_KEY, 'base64');
-  private readonly iv = Buffer.from(process.env.ENCRYPTION_IV, 'base64');
+  private readonly key = Buffer.from(process.env.ENCRYPTION_KEY, BASE64);
+  private readonly iv = Buffer.from(process.env.ENCRYPTION_IV, BASE64);
 
   /**
-   * Encrypt text.
+   * Encrypt text
    * @param text text to encrypt
    * @returns encrypted text
    */
@@ -20,7 +21,7 @@ export class EncryptionService implements IEncryptionService {
   }
 
   /**
-   * Decrypt text.
+   * Decrypt text
    * @param text text to decrypt
    * @returns decrypted text
    */

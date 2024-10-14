@@ -1,15 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PointsScale } from 'src/domain/enum/quakeHistory/pointsEnum';
 import { IUserService } from 'src/domain/interfaces/services/userService';
-import { convertPrefectureToNumber } from 'src/domain/useCase/prefecture';
-import { convertSeismicIntensityToNumber } from 'src/domain/useCase/seismicIntensity';
 import { UserRepository } from 'src/infrastructure/repositories/userRepository';
 import { EncryptionService } from './encryptionService';
 import { User } from 'src/domain/entities/user';
+import { convertSeismicIntensityToNumber } from 'src/domain/useCase/seismicIntensity';
+import { convertPrefectureToNumber } from 'src/domain/useCase/prefecture';
 
 // Log message constants
 const LOG_MESSAGES = {
-  ENSURE_USER_ID_EXISTS: 'Ensuring user ID exists: ',
+  ENSURE_USER_ID_EXISTS: 'Ensuring user id exists',
 };
 
 /**
@@ -25,7 +25,7 @@ export class UserService implements IUserService {
   ) {}
 
   /**
-   * Get users by prefectures.
+   * Get users by prefectures
    * @param prefectures prefectures
    * @returns Users
    */
@@ -37,11 +37,11 @@ export class UserService implements IUserService {
   }
 
   /**
-   * Ensure user id exists.
+   * Ensure user id exists
    * @param userId user id
    */
   async ensureUserIdExists(userId: string): Promise<void> {
-    this.logger.log(`${LOG_MESSAGES.ENSURE_USER_ID_EXISTS}${userId}`);
+    this.logger.log(`${LOG_MESSAGES.ENSURE_USER_ID_EXISTS}: ${userId}`);
 
     const encryptedUserId = await this.encryptionService.encrypt(userId);
     const isValidUser =
@@ -53,7 +53,7 @@ export class UserService implements IUserService {
   }
 
   /**
-   * Delete user.
+   * Delete user
    * @param userId user id
    */
   async deleteUser(userId: string): Promise<void> {
@@ -62,7 +62,7 @@ export class UserService implements IUserService {
   }
 
   /**
-   * Update user's prefecture.
+   * Update user's prefecture
    * @param userId user id
    * @param prefecture prefecture
    */
@@ -78,7 +78,7 @@ export class UserService implements IUserService {
   }
 
   /**
-   * Update user's seismic intensity.
+   * Update user's seismic intensity
    * @param userId user id
    * @param seismicIntensity seismic intensity
    */

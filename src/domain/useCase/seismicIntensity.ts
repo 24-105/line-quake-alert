@@ -1,7 +1,7 @@
 import { SeismicIntensityScale } from '../enum/common/seismicIntensity';
 
 /**
- * Convert seismicIntensity scale to corresponding enum value.
+ * Convert seismicIntensity scale to corresponding enum value
  * @param seismicIntensity seismicIntensity scale
  * @returns corresponding enum value or null if not found
  */
@@ -16,7 +16,7 @@ export const convertSeismicIntensityToNumber = (
 };
 
 /**
- * Convert seismicIntensity enum value to corresponding scale.
+ * Convert seismicIntensity enum value to corresponding scale
  * @param seismicIntensityEnum seismicIntensity enum value
  * @returns corresponding scale or null if not found
  */
