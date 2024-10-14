@@ -11,7 +11,8 @@ import { createHeaders } from 'src/domain/useCase/http';
 
 // Log message constants
 const LOG_MESSAGES = {
-  REQUEST_FETCH_QUAKE_HISTORY: 'Fetching quake history from the P2P Quake API',
+  REQUEST_FETCH_QUAKE_HISTORY:
+    'Requesting fetch quake history from the P2P Quake API',
   REQUEST_FETCH_QUAKE_HISTORY_FAILED:
     'Failed to fetch quake history from the P2P Quake API',
 };

@@ -6,20 +6,20 @@ import { In, Repository } from 'typeorm';
 
 // Log message constants
 const LOG_MESSAGES = {
-  GET_USERS: 'Getting users',
+  GET_USERS: 'Get users',
   GET_USERS_FAILED: 'Failed to get users',
-  CHECK_USER_ID_EXISTS: 'Checking if user id exists',
+  CHECK_USER_ID_EXISTS: 'Check if user id exists',
   CHECK_USER_ID_FAILED: 'Failed to check if user id exists',
-  PUT_USER_ID: 'Putting new user id',
+  PUT_USER_ID: 'Put new user id',
   PUT_USER_ID_FAILED: 'Failed to put userId',
-  DELETE_USER: 'Deleting user',
+  DELETE_USER: 'Delete user',
   DELETE_USER_FAILED: 'Failed to delete user',
-  UPDATE_USER_PREFECTURE: 'User id to update prefecture',
+  UPDATE_USER_PREFECTURE: 'Update user prefecture',
   UPDATE_USER_PREFECTURE_FAILED: 'Failed to update user prefecture',
   UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY:
-    'User id to update threshold_seismic_intensity',
+    'Update user threshold seismic intensity',
   UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY_FAILED:
-    'Failed to update user threshold_seismic_intensity',
+    'Failed to update user threshold seismic intensity',
 };
 
 /**
