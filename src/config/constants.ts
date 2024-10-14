@@ -1,5 +1,5 @@
-export const QUAKE_HISTORY_VALID_TIME = 60 * 1; // 1 minutes
-// export const QUAKE_HISTORY_VALID_TIME = 60 * 60 * 24 * 365;
+// export const QUAKE_HISTORY_VALID_TIME = 60 * 1; // 1 minutes
+export const QUAKE_HISTORY_VALID_TIME = 60 * 60 * 24 * 365;
 export const QUAKE_ID_VALID_TIME = 60 * 2; // 2 minutes
 
 export const CHANNEL_ACCESS_TOKEN_VALID_TIME = 60 * 60 * 24 * 3; // 3 days
@@ -19,6 +19,9 @@ export const LINE_API_GET_USER_PROFILE_URL =
   'https://api.line.me/v2/bot/profile/';
 export const LINE_API_PUSH_MESSAGE_URL =
   'https://api.line.me/v2/bot/message/push';
+
+export const YAHOO_WEATHER_JP_EARTHQUAKE =
+  'https://typhoon.yahoo.co.jp/weather/jp/earthquake/';
 
 export const LINE_SIGNATURE_HEADER = 'x-line-signature';
 

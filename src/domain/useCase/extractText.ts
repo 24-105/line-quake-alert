@@ -36,7 +36,7 @@ export const extractPrefecturesByPoints = async (
 
   if (history.points) {
     history.points
-      .filter((point) => point.scale >= PointsScale.SCALE40)
+      .filter((point) => point.scale >= PointsScale.SCALE10)
       .forEach((point) => {
         if (!prefectures.includes(point.pref)) {
           prefectures.push(point.pref);

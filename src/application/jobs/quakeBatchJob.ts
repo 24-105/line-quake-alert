@@ -24,15 +24,15 @@ export class QuakeBatchJob implements IQuakeBatchJob {
   /**
    * Batch process to fetch, save, and notify quake history
    */
-  // @Cron(CronExpression.EVERY_5_SECONDS)
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  @Cron(CronExpression.EVERY_5_SECONDS)
+  // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async processQuakeHistoryBatch(): Promise<void> {
     this.logger.log(LOG_MESSAGES.START_PROCESS_QUAKE_HISTORY_BATCH);
 
     // fixed argument
     const codes = P2P_GET_QUAKE_HISTORY_CODE;
-    const limit = 3;
-    const offset = 0;
+    const limit = 2;
+    const offset = 1;
 
     //TODO 後で消す
     const startTime = performance.now();

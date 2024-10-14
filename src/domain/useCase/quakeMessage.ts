@@ -6,6 +6,7 @@ import { convertSeismicIntensityToString } from './seismicIntensity';
 import { convertToCustomFormat } from './date';
 import { convertDomesticTsunamiToMessage } from './domesticTsunami';
 import { FlexBox } from '@line/bot-sdk/dist/messaging-api/model/models';
+import { YAHOO_WEATHER_JP_EARTHQUAKE } from 'src/config/constants';
 
 /**
  * Create main quake message
@@ -20,41 +21,38 @@ export const createMainQuakeMessage = async (
     layout: 'vertical',
     contents: [
       {
-        type: 'text',
-        text: `最大震度 ${history.earthquake.maxScale ? convertSeismicIntensityToString(history.earthquake.maxScale) : '不明'}`,
-        size: 'sm',
-        color: '#4ba7b4',
-        flex: 0,
-        weight: 'bold',
+        type: 'box',
+        layout: 'horizontal',
+        contents: [
+          {
+            type: 'text',
+            text: `最大${history.earthquake.maxScale ? convertSeismicIntensityToString(history.earthquake.maxScale) : '震度不明'}`,
+            size: 'md',
+            color: '#4ba7b4',
+            flex: 0,
+            weight: 'bold',
+          },
+          {
+            type: 'text',
+            text: `${convertToCustomFormat(history.earthquake.time)} 発生`,
+            size: 'sm',
+            color: '#4ba7b4',
+            weight: 'bold',
+            align: 'end',
+            gravity: 'center',
+          },
+        ],
       },
       {
         type: 'text',
-        text: '地震が発生しました',
+        text: history.earthquake.hypocenter?.name
+          ? `${history.earthquake.hypocenter?.name}を震源とした地震が発生しました`
+          : '震源が不明な地震が発生しました',
         weight: 'bold',
-        size: 'xl',
+        size: 'lg',
         margin: 'md',
         offsetStart: 'sm',
-      },
-      {
-        type: 'separator',
-        margin: 'xxl',
-      },
-      {
-        type: 'text',
-        text: `${convertToCustomFormat(history.earthquake.time)} 発生`,
-        size: 'sm',
-        color: '#4ba7b4',
-        flex: 0,
-        weight: 'bold',
-        margin: 'md',
-      },
-      {
-        type: 'text',
-        text: `震源 ${history.earthquake.hypocenter?.name || '不明'}`,
-        weight: 'bold',
-        size: 'xl',
-        margin: 'md',
-        offsetStart: 'sm',
+        wrap: true,
       },
       {
         type: 'separator',
@@ -179,10 +177,15 @@ export const createMainQuakeMessage = async (
         contents: [
           {
             type: 'text',
-            text: '日本気象庁 提供',
+            text: 'Yahoo!天気・災害',
             color: '#aaaaaa',
             size: 'xs',
             align: 'end',
+            action: {
+              type: 'uri',
+              label: 'Yahoo!天気・災害',
+              uri: YAHOO_WEATHER_JP_EARTHQUAKE,
+            },
           },
         ],
       },
@@ -201,7 +204,7 @@ export const createSubQuakeMessage = async (
   const texts: { type: 'text'; text: string; margin: string }[] = [];
   for (const point of points) {
     const area = `${point.pref} ${point.addr}`;
-    const scale = `震度 ${point.scale ? convertSeismicIntensityToString(point.scale) : '不明'}`;
+    const scale = `${point.scale ? convertSeismicIntensityToString(point.scale) : '震度不明'}`;
     const information = `${area} ${scale}`;
     texts.push({
       type: 'text',
@@ -224,7 +227,7 @@ export const createSubQuakeMessage = async (
       },
       {
         type: 'separator',
-        margin: 'xxl',
+        margin: 'xl',
       },
       ...texts,
     ],

@@ -46,7 +46,11 @@ export class P2pQuakeApi implements IP2pQuakeApi {
 
     try {
       const response = await firstValueFrom(
-        this.httpService.get(P2P_GET_QUAKE_HISTORY_URL, { params, headers }),
+        this.httpService.get(P2P_GET_QUAKE_HISTORY_URL, {
+          params,
+          headers,
+          timeout: 5000,
+        }),
       );
       return response.data;
     } catch (err) {

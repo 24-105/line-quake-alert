@@ -57,10 +57,11 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
 
   /**
    * Get latest channel access token
+   * @param channelIss channel iss
    * @returns channel access token
    */
-  async getLatestChannelAccessToken(): Promise<string> {
-    const channelAccessToken = await this.getChannelAccessToken();
+  async getLatestChannelAccessToken(channelIss: string): Promise<string> {
+    const channelAccessToken = await this.getChannelAccessToken(channelIss);
     const isValidToken =
       await this.verifyChannelAccessToken(channelAccessToken);
 
@@ -68,15 +69,17 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
       return channelAccessToken;
     }
 
-    return await this.refreshChannelAccessToken();
+    return await this.refreshChannelAccessToken(channelIss);
   }
+
   /**
    * Get channel access token from repository
+   * @param channelIss channel iss
    * @returns channel access token
    */
-  private async getChannelAccessToken(): Promise<string> {
+  private async getChannelAccessToken(channelIss: string): Promise<string> {
     return await this.channelAccessTokenRepository.getChannelAccessToken(
-      process.env.LINE_QUALE_QUICK_ALERT_ADMIN_ISS,
+      channelIss,
     );
   }
 
@@ -93,9 +96,9 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
    * Refresh the channel access token
    * @returns new channel access token
    */
-  private async refreshChannelAccessToken(): Promise<string> {
+  private async refreshChannelAccessToken(channelIss: string): Promise<string> {
     await this.processChannelAccessToken();
-    return await this.getChannelAccessToken();
+    return await this.getChannelAccessToken(channelIss);
   }
 
   /**

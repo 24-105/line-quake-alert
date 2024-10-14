@@ -152,7 +152,9 @@ export class MessageEventService implements IMessageEventService {
 
     try {
       const channelAccessToken =
-        await this.channelAccessTokenService.getLatestChannelAccessToken();
+        await this.channelAccessTokenService.getLatestChannelAccessToken(
+          process.env.LINE_QUALE_QUICK_ALERT_ADMIN_ISS,
+        );
 
       const userProfile = await this.userApi.fetchUserProfile(
         channelAccessToken,

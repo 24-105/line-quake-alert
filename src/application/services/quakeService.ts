@@ -28,6 +28,10 @@ import { EncryptionService } from './encryptionService';
 const LOG_MESSAGES = {
   PROCESS_QUAKE_HISTORY: 'Process quake history',
   HISTORY_NOT_FOUND: 'No quake history found',
+  EVENT_TIME_NOT_VALID: 'Event time is not valid',
+  MAX_SCALE_NOT_FOUND: 'Max scale is not found',
+  MAX_SCALE_LESS: 'Max scale is less than',
+  QUAKE_ID_EXISTS: 'Quake id already exists',
   PUT_QUAKE_ID_FAILED: 'Failed to put quakeId',
   HISTORY_NOT_TARGETED: 'This history is not targeted',
   PREFECTURES_NOT_FOUND: 'Prefectures are not included in the history',
@@ -71,29 +75,29 @@ export class QuakeService implements IQuakeService {
 
     // Process each quake history
     for (const history of quakeHistory) {
-      // Save quake id to the repository
-      await this.saveQuakeId(history.id);
-
       const unixTimeNow = convertToUnixTime(getJstTime());
 
       // Determine if the quake history should be skipped
       if (await this.shouldSkipHistory(history, unixTimeNow)) {
         this.logger.log(LOG_MESSAGES.HISTORY_NOT_TARGETED);
-        return;
+        continue;
       }
+
+      // Save quake id to the repository
+      await this.saveQuakeId(history.id);
 
       // Extract prefectures by points
       const prefectures = await extractPrefecturesByPoints(history);
       if (prefectures.length === 0) {
         this.logger.log(LOG_MESSAGES.PREFECTURES_NOT_FOUND);
-        return;
+        continue;
       }
 
       // get users by prefectures
       const users = await this.userService.getUsersByPrefectures(prefectures);
       if (users.length === 0) {
         this.logger.log(LOG_MESSAGES.TARGET_USERS_NOT_FOUND);
-        return;
+        continue;
       }
 
       // Build main quake message
@@ -147,6 +151,39 @@ export class QuakeService implements IQuakeService {
   }
 
   /**
+   * Determine if the quake history should be skipped
+   * @param history Quake history object
+   * @param unixTimeNow Current Unix time
+   * @returns true: skip, false: do not skip
+   */
+  private async shouldSkipHistory(
+    history: fetchP2pQuakeHistoryResponseDto,
+    unixTimeNow: number,
+  ): Promise<boolean> {
+    if (await isEventTimeValid(unixTimeNow, history.earthquake.time)) {
+      this.logger.log(LOG_MESSAGES.EVENT_TIME_NOT_VALID);
+      return true;
+    }
+
+    if (!history.earthquake.maxScale) {
+      this.logger.log(LOG_MESSAGES.MAX_SCALE_NOT_FOUND);
+      return true;
+    }
+
+    if (history.earthquake.maxScale < PointsScale.SCALE10) {
+      this.logger.log(`${LOG_MESSAGES.MAX_SCALE_LESS} ${PointsScale.SCALE10}`);
+      return true;
+    }
+
+    if (await this.quakeHistoryRepository.isQuakeIdExists(history.id)) {
+      this.logger.log(LOG_MESSAGES.QUAKE_ID_EXISTS);
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
    * Save quake id to the repository
    * @param quakeId Quake id
    */
@@ -160,35 +197,6 @@ export class QuakeService implements IQuakeService {
       );
       throw err;
     }
-  }
-
-  /**
-   * Determine if the quake history should be skipped
-   * @param history Quake history object
-   * @param unixTimeNow Current Unix time
-   * @returns true: skip, false: do not skip
-   */
-  private async shouldSkipHistory(
-    history: fetchP2pQuakeHistoryResponseDto,
-    unixTimeNow: number,
-  ): Promise<boolean> {
-    if (await isEventTimeValid(unixTimeNow, history.earthquake.time)) {
-      return true;
-    }
-
-    if (!history.earthquake.maxScale) {
-      return true;
-    }
-
-    if (history.earthquake.maxScale < PointsScale.SCALE40) {
-      return true;
-    }
-
-    if (await this.quakeHistoryRepository.isQuakeIdExists(history.id)) {
-      return true;
-    }
-
-    return false;
   }
 
   /**
@@ -232,9 +240,11 @@ export class QuakeService implements IQuakeService {
 
     try {
       const channelAccessToken =
-        await this.channelAccessTokenService.getLatestChannelAccessToken();
+        await this.channelAccessTokenService.getLatestChannelAccessToken(
+          process.env.LINE_QUALE_QUICK_ALERT_ISS,
+        );
 
-      const decryptedUserId = await this.encryptionService.encrypt(userId);
+      const decryptedUserId = await this.encryptionService.decrypt(userId);
 
       await this.pushMessageService.pushMessage(
         channelAccessToken,
