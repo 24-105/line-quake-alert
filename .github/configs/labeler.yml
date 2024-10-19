@@ -41,7 +41,7 @@ appCore:
 
 test:
   - changed-files:
-      - any-glob-to-any-file: 'tests/**'
+      - any-glob-to-any-file: ['test/**', 'src/test/**']
 
 # Branch pattern
 feature:
