@@ -20,3 +20,11 @@ jobs:
 
       - name: Run TypeScript compiler
         run: npm run build
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Jest coverage
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        with:
+          test-script: npm run test:cov
