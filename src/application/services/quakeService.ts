@@ -9,7 +9,7 @@ import { UserService } from './userService';
 import {
   fetchP2pQuakeHistoryResponseDto,
   QuakeHistoryPoints,
-} from '../dto/quakeHistoryDto';
+} from 'src/application/dto/quakeHistoryDto';
 import { convertUser } from 'src/domain/converters/user';
 import { extractPrefecturesByPoints } from 'src/domain/useCase/extractText';
 import { FlexMessage } from '@line/bot-sdk/dist/messaging-api/model/models';
@@ -158,8 +158,8 @@ export class QuakeService implements IQuakeService {
       return true;
     }
 
-    if (history.earthquake.maxScale < PointsScale.SCALE10) {
-      this.logger.log(`${LOG_MESSAGES.MAX_SCALE_LESS} ${PointsScale.SCALE10}`);
+    if (history.earthquake.maxScale < PointsScale.SCALE40) {
+      this.logger.log(`${LOG_MESSAGES.MAX_SCALE_LESS} ${PointsScale.SCALE40}`);
       return true;
     }
 

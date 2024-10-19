@@ -17,7 +17,7 @@ import {
 import { PointsScale } from 'src/domain/enum/quakeHistory/pointsEnum';
 
 // Quake history issue
-class QuakeHistoryIssue {
+export class QuakeHistoryIssue {
   @IsString()
   source?: string;
 
@@ -52,7 +52,7 @@ class QuakeHistoryHypocenter {
 }
 
 // Quake history earthquake
-class QuakeHistoryEarthquake {
+export class QuakeHistoryEarthquake {
   @IsNotEmpty()
   @IsString()
   time: string;
@@ -89,7 +89,7 @@ export class QuakeHistoryPoints {
 }
 
 // Quake history comments
-class QuakeHistoryComments {
+export class QuakeHistoryComments {
   @IsNotEmpty()
   @IsString()
   freeFormComment: string;

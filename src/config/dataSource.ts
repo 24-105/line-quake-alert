@@ -2,7 +2,7 @@ import { User } from 'src/domain/entities/user';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { Logger } from '@nestjs/common';
-import { LOG_MESSAGES } from './logMessages';
+import { LOG_MESSAGES } from 'src/config/logMessages';
 
 // Get execution environment
 const env = process.env.NODE_ENV;

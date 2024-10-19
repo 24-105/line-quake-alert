@@ -2,9 +2,9 @@ import {
   fetchP2pQuakeHistoryResponseDto,
   QuakeHistoryPoints,
 } from 'src/application/dto/quakeHistoryDto';
-import { convertSeismicIntensityToString } from './seismicIntensity';
-import { convertToCustomFormat } from './date';
-import { convertDomesticTsunamiToMessage } from './domesticTsunami';
+import { convertSeismicIntensityToString } from 'src/domain/useCase/seismicIntensity';
+import { convertToCustomFormat } from 'src/domain/useCase/date';
+import { convertDomesticTsunamiToMessage } from 'src/domain/useCase/domesticTsunami';
 import { FlexBox } from '@line/bot-sdk/dist/messaging-api/model/models';
 import { HTTP_URL } from 'src/config/constants/http';
 

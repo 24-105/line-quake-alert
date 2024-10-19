@@ -1,5 +1,5 @@
 import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
-import { convertToUnixTime } from './date';
+import { convertToUnixTime } from 'src/domain/useCase/date';
 
 /**
  * Check if the quake  event time meets the threshold

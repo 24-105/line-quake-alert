@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { IQuakeBatchJob } from 'src/domain/interfaces/jobs/quakeBatchJob';
-import { QuakeService } from '../services/quakeService';
+import { QuakeService } from 'src/application/services/quakeService';
 import { LOG_MESSAGES } from 'src/config/logMessages';
 
 /**
