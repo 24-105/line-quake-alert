@@ -1,16 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": [
-    ".github",
-    ".husky",
-    "cdk",
-    "certbot",
-    "dist",
-    "docker",
-    "key",
-    "webroot",
-    "node_modules",
-    "public",
-    "test"
-  ]
+  "exclude": ["cdk", "dist", "node_modules", "test"]
 }
