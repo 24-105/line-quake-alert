@@ -84,4 +84,6 @@ export const LOG_MESSAGES = {
   HANDLING_WEBHOOK_EVENTS: 'Handling LINE webhook events',
   WEBHOOK_EVENTS_BAD_REQUEST: 'Bad request for webhook events',
   HANDLING_WEBHOOK_EVENTS_FAILED: 'Failed to handling webhook events',
+  DATA_SOURCE_INITIALIZED: 'Data Source has been initialized',
+  DATA_SOURCE_INITIALIZATION_FAILED: 'Failed to initialize data source',
 };
