@@ -23,6 +23,7 @@ import { ChannelAccessTokenService } from './channelAccessTokenService';
 import { PushMessageService } from './pushMessageService';
 import { EncryptionService } from './encryptionService';
 import { LOG_MESSAGES } from 'src/config/logMessages';
+import Bottleneck from 'bottleneck';
 
 /**
  * Quake service
@@ -30,6 +31,7 @@ import { LOG_MESSAGES } from 'src/config/logMessages';
 @Injectable()
 export class QuakeService implements IQuakeService {
   private readonly logger = new Logger(QuakeService.name);
+  private readonly limiter = new Bottleneck({ minTime: 0.5 }); // 2000req / 1s
 
   constructor(
     private readonly userService: UserService,
@@ -87,8 +89,8 @@ export class QuakeService implements IQuakeService {
       // Build main quake message
       const flexMainMessage = await this.buildMainQuakeMessage(history);
 
-      //send quake notice to users
-      Promise.all(
+      //send quake history notice to users
+      await Promise.all(
         users.map(async (userEntity) => {
           const user = convertUser(userEntity);
           const filteredPoints = history.points.filter(
@@ -98,12 +100,14 @@ export class QuakeService implements IQuakeService {
           const flexSubMessage =
             await this.buildSubQuakeMessage(filteredPoints);
 
-          // send quake notice
-          await this.sendQuakeNotice(
-            user.userId,
-            flexMainMessage,
-            flexSubMessage,
-          );
+          // send notice
+          await this.limiter.schedule(async () => {
+            return await this.sendQuakeNotice(
+              user.userId,
+              flexMainMessage,
+              flexSubMessage,
+            );
+          });
         }),
       );
     }
