@@ -41,7 +41,7 @@ appCore:
 
 test:
   - changed-files:
-      - any-glob-to-any-file: 'tests/**'
+      - any-glob-to-any-file: ['tests/**', 'src/test/**']
 
 # Branch pattern
 feature:
@@ -64,3 +64,5 @@ hotfix:
   - head-branch: ['^hotfix/']
 release:
   - head-branch: ['^release/']
+test:
+  - head-branch: ['^test/']
