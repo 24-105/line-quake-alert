@@ -1,6 +1,8 @@
 import { User } from 'src/domain/entities/user';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
+import { Logger } from '@nestjs/common';
+import { LOG_MESSAGES } from './logMessages';
 
 // Get execution environment
 const env = process.env.NODE_ENV;
@@ -20,10 +22,12 @@ export const AppDataSource = new DataSource({
   entities: [User],
 });
 
+const logger = new Logger('AppDataSource');
+
 AppDataSource.initialize()
   .then(() => {
-    console.log('Data Source has been initialized!');
+    logger.log(LOG_MESSAGES.DATA_SOURCE_INITIALIZED);
   })
   .catch((err) => {
-    console.error('Error during Data Source initialization:', err.stack);
+    logger.error(LOG_MESSAGES.DATA_SOURCE_INITIALIZATION_FAILED, err.stack);
   });
