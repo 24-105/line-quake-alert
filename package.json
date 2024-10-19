@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "NODE_ENV=local nest start ---watch",
     "start:dev": "NODE_ENV=dev nest start",
-    "start:prd": "NODE_ENV=prd node dist/main",
+    "start:prd": "NODE_ENV=prd node dist/src/main",
     "start:debug": "NODE_ENV=local nest start --debug --watch",
     "type": "module",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
