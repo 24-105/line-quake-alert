@@ -1,0 +1,87 @@
+export const LOG_MESSAGES = {
+  START_PROCESS_CHANNEL_ACCESS_TOKEN_BATCH:
+    'Start process channel access token batch',
+  PROCESS_CHANNEL_ACCESS_TOKEN_BATCH_SUCCESS:
+    'Successfully processed channel access token',
+  PROCESS_CHANNEL_ACCESS_TOKEN_BATCH_FAILED:
+    'Failed to process channel access token',
+  PROCESS_QUAKE_HISTORY: 'Process quake history',
+  NOT_QUAKE_HISTORY_DATA: 'No quake history data',
+  QUAKE_TIME_NOT_VALID: 'Quake time is not valid',
+  MAX_SCALE_NOT_FOUND: 'Max scale is not found',
+  MAX_SCALE_LESS: 'Max scale is less than',
+  QUAKE_ID_EXISTS: 'Quake id already exists',
+  PUT_QUAKE_ID_FAILED: 'Failed to put quake id',
+  QUAKE_HISTORY_NOT_TARGETED: 'This quake history is not targeted',
+  PREFECTURES_NOT_INCLUDED: 'Prefectures are not included in the quake history',
+  TARGET_USERS_NOT_FOUND: 'There are no users targeted for distribution',
+  SEND_QUAKE_NOTICE: 'Send quake history notice',
+  SEND_QUAKE_NOTICE_FAILED: 'Failed to send quake history notice',
+  START_PROCESS_QUAKE_HISTORY_BATCH: 'Start process quake history batch',
+  PROCESS_QUAKE_HISTORY_BATCH_SUCCESS:
+    'Successfully process quake history batch',
+  PROCESS_QUAKE_HISTORY_BATCH_FAILED: 'Failed to Process quake history batch',
+  PROCESS_CHANNEL_ACCESS_TOKEN: 'Process channel access token',
+  GENERATE_JWT: 'Generate JWT',
+  GENERATE_ADMIN_JWT: 'Generate admin JWT',
+  GENERATE_JWT_FAILED: 'Failed to generate JWT',
+  GENERATE_JWT_ADMIN_FAILED: 'Failed to generate admin JWT',
+  FETCH_CHANNEL_ACCESS_TOKEN: 'Trying to fetch channel access token',
+  FETCH_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to fetch channel access token',
+  UPDATE_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to update channel access token',
+  HANDLING_FOLLOW_EVENT: 'Handling follow event',
+  HANDLING_FOLLOW_EVENT_FAILED: 'Failed to handling follow event',
+  HANDLING_UNFOLLOW_EVENT: 'Handling unfollow event',
+  HANDLING_UNFOLLOW_EVENT_FAILED: 'Failed to handling unfollow event',
+  EVENT_TYPE_NOT_SUPPORTED: 'Event types not supported',
+  NOT_MESSAGE_EVENT: 'This is not a MessageEvent',
+  MESSAGE_NOT_SUPPORTED: 'Message not supported',
+  TEXT_NOT_SUPPORTED: 'Text not supported',
+  HANDLING_WHERE_YOU_LIVE: 'Handling where you live',
+  HANDLING_WHERE_YOU_LIVE_FAILED: 'Failed to handling where you live',
+  HANDLING_QUAKE_SEISMIC_INTENSITY: 'Handling quake seismic intensity',
+  HANDLING_QUAKE_SEISMIC_INTENSITY_FAILED:
+    'Failed to handling quake seismic intensity',
+  HANDLING_CONTACT_ME_BY_CHAT: 'Handling contact me by chat',
+  HANDLING_CONTACT_ME_BY_CHAT_FAILED: 'Failed to handling contact me by chat',
+  ENSURE_USER_ID_EXISTS: 'Ensuring user id exists',
+  PUSH_MESSAGE: 'Pushing message to the user',
+  PUSH_MESSAGE_FAILED: 'Failed to push message to the user',
+  REQUEST_FETCH_CHANNEL_ACCESS_TOKEN:
+    'Requesting fetch channel access token from the LINE Messaging API',
+  FETCH_ACCESS_TOKEN_FAILED: 'Failed to fetch channel access token',
+  REQUEST_VERIFY_CHANNEL_ACCESS_TOKEN:
+    'Requesting verify channel access token from the LINE Messaging API',
+  VERIFY_ACCESS_TOKEN_FAILED: 'Failed to verify channel access token',
+  REQUEST_PUSH_MESSAGE:
+    'Requesting to push a message via the LINE Messaging API',
+  POST_PUSH_MESSAGE_FAILED:
+    'Failed to post push message via the LINE Messaging API',
+  REQUEST_USER_PROFILE: 'Requesting user profile from the LINE Messaging API',
+  FETCH_USER_PROFILE_FAILED:
+    'Failed to fetch user profile from the LINE Messaging API',
+  REQUEST_FETCH_QUAKE_HISTORY:
+    'Requesting fetch quake history from the P2P Quake API',
+  REQUEST_FETCH_QUAKE_HISTORY_FAILED:
+    'Failed to fetch quake history from the P2P Quake API',
+  PUT_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to put channel access token',
+  GET_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to get channel access token',
+  CHECK_QUAKE_ID_FAILED: 'Failed to check quake id',
+  GET_USERS: 'Get users',
+  GET_USERS_FAILED: 'Failed to get users',
+  CHECK_USER_ID_EXISTS: 'Check if user id exists',
+  CHECK_USER_ID_FAILED: 'Failed to check if user id exists',
+  PUT_USER_ID: 'Put new user id',
+  PUT_USER_ID_FAILED: 'Failed to put userId',
+  DELETE_USER: 'Delete user',
+  DELETE_USER_FAILED: 'Failed to delete user',
+  UPDATE_USER_PREFECTURE: 'Update user prefecture',
+  UPDATE_USER_PREFECTURE_FAILED: 'Failed to update user prefecture',
+  UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY:
+    'Update user threshold seismic intensity',
+  UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY_FAILED:
+    'Failed to update user threshold seismic intensity',
+  HANDLING_WEBHOOK_EVENTS: 'Handling LINE webhook events',
+  WEBHOOK_EVENTS_BAD_REQUEST: 'Bad request for webhook events',
+  HANDLING_WEBHOOK_EVENTS_FAILED: 'Failed to handling webhook events',
+};

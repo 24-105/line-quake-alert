@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { UTF8 } from 'src/config/constants';
+import { UTF8 } from 'src/config/constants/encode';
 
 /**
  * Read private key file

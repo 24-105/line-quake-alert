@@ -6,16 +6,9 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Logger } from '@nestjs/common';
-import {
-  QUAKE_HISTORY_TABLE_NAME,
-  QUAKE_ID_VALID_TIME,
-} from 'src/config/constants';
-
-// Log message constants
-const LOG_MESSAGES = {
-  CHECK_QUAKE_ID_FAILED: 'Failed to check quakeId',
-  PUT_QUAKE_ID_FAILED: 'Failed to put quakeId',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
+import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
+import { TABLE_NAME } from 'src/config/constants/tableName';
 
 /**
  * Quake history repository
@@ -27,7 +20,7 @@ export class QuakeHistoryRepository implements IQuakeHistoryRepository {
 
   constructor() {
     this.dynamoDbClient = this.createDynamoDbClient();
-    this.tableName = QUAKE_HISTORY_TABLE_NAME;
+    this.tableName = TABLE_NAME.QUAKE_HISTORY_TABLE_NAME;
   }
 
   /**
@@ -74,7 +67,7 @@ export class QuakeHistoryRepository implements IQuakeHistoryRepository {
       TableName: this.tableName,
       Item: {
         quakeId: quakeId,
-        TTL: QUAKE_ID_VALID_TIME,
+        TTL: EXPIRATION_TIME.QUAKE_ID_VALID_TIME,
       },
     };
 

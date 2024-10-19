@@ -6,11 +6,7 @@ import { EncryptionService } from './encryptionService';
 import { User } from 'src/domain/entities/user';
 import { convertSeismicIntensityToNumber } from 'src/domain/useCase/seismicIntensity';
 import { convertPrefectureToNumber } from 'src/domain/useCase/prefecture';
-
-// Log message constants
-const LOG_MESSAGES = {
-  ENSURE_USER_ID_EXISTS: 'Ensuring user id exists',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
 
 /**
  * User service

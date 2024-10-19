@@ -1,11 +1,8 @@
 import * as jose from 'node-jose';
-import {
-  JWT,
-  JWT_EXPIRATION_TIME,
-  JWT_FORMAT_COMPACT,
-  LINE_API_BASE_URL,
-  SIGNATURE_ALGORITHM_RS256,
-} from 'src/config/constants';
+import { SIGNATURE_ALGORITHM_RS256 } from 'src/config/constants/algorithm';
+import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
+import { HTTP_URL } from 'src/config/constants/http';
+import { JWT, JWT_FORMAT_COMPACT } from 'src/config/constants/jwt';
 
 /**
  * Generate JWT
@@ -30,9 +27,9 @@ export const generateJwt = async (
   const payload = {
     iss: iss,
     sub: sub,
-    aud: LINE_API_BASE_URL,
+    aud: HTTP_URL.LINE_API_BASE_URL,
     exp: Math.floor(new Date().getTime() / 1000) + 60 * 30,
-    token_exp: JWT_EXPIRATION_TIME,
+    token_exp: EXPIRATION_TIME.JWT_VALID_TIME,
   };
 
   try {

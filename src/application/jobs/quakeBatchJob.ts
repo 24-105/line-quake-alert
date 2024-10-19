@@ -1,16 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { P2P_GET_QUAKE_HISTORY_CODE } from 'src/config/constants';
 import { IQuakeBatchJob } from 'src/domain/interfaces/jobs/quakeBatchJob';
 import { QuakeService } from '../services/quakeService';
-
-// Log message constants
-const LOG_MESSAGES = {
-  START_PROCESS_QUAKE_HISTORY_BATCH: 'Start process quake history batch',
-  PROCESS_QUAKE_HISTORY_BATCH_SUCCESS:
-    'Successfully process quake history batch',
-  PROCESS_QUAKE_HISTORY_BATCH_FAILED: 'Failed to Process quake history batch',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
 
 /**
  * Quake batch job
@@ -30,7 +22,7 @@ export class QuakeBatchJob implements IQuakeBatchJob {
     this.logger.log(LOG_MESSAGES.START_PROCESS_QUAKE_HISTORY_BATCH);
 
     // fixed argument
-    const codes = P2P_GET_QUAKE_HISTORY_CODE;
+    const codes = 551;
     const limit = 2;
     const offset = 1;
 

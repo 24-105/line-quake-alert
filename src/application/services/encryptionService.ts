@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BASE64 } from 'src/config/constants';
+import { BASE64 } from 'src/config/constants/encode';
 import { IEncryptionService } from 'src/domain/interfaces/services/encryptionService';
 import { decrypt, encrypt } from 'src/domain/useCase/encryption';
 

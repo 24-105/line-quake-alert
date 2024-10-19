@@ -1,0 +1,6 @@
+export const EXPIRATION_TIME = {
+  QUAKE_HISTORY_VALID_TIME: 60 * 1,
+  QUAKE_ID_VALID_TIME: 60 * 2, // 2 minutes
+  CHANNEL_ACCESS_TOKEN_VALID_TIME: 60 * 60 * 24 * 3, // 3 days
+  JWT_VALID_TIME: 60 * 60 * 24 * 30, // 30 days
+};

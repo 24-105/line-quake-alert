@@ -1,4 +1,4 @@
-import { QUAKE_HISTORY_VALID_TIME } from 'src/config/constants';
+import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
 import { convertToUnixTime } from './date';
 
 /**
@@ -12,5 +12,7 @@ export const isEventTimeValid = async (
   eventTime: string,
 ): Promise<boolean> => {
   const unixEventTime = convertToUnixTime(eventTime);
-  return unixTimeNow - unixEventTime >= QUAKE_HISTORY_VALID_TIME;
+  return (
+    unixTimeNow - unixEventTime >= EXPIRATION_TIME.QUAKE_HISTORY_VALID_TIME
+  );
 };

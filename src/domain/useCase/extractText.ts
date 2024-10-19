@@ -1,6 +1,6 @@
 import { fetchP2pQuakeHistoryResponseDto } from 'src/application/dto/quakeHistoryDto';
-import { RESPONSE_MESSAGE_TRIGGER } from 'src/config/constants';
 import { PointsScale } from '../enum/quakeHistory/pointsEnum';
+import { RESPONSE_MESSAGE_TRIGGER } from 'src/config/constants/lineWebhook';
 
 /**
  * Extract prefecture name from received text

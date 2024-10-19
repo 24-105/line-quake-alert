@@ -1,14 +1,9 @@
 import { Controller, Logger, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { LineWebhookService } from 'src/application/services/lineWebhookService';
-import { LINE_SIGNATURE_HEADER } from 'src/config/constants';
+import { HTTP_HEADER } from 'src/config/constants/http';
 
-// Log message constants
-const LOG_MESSAGES = {
-  HANDLING_WEBHOOK_EVENTS: 'Handling LINE webhook events',
-  WEBHOOK_EVENTS_BAD_REQUEST: 'Bad request for webhook events',
-  HANDLING_WEBHOOK_EVENTS_FAILED: 'Failed to handling webhook events',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
 
 /**
  * LINE webhook controller
@@ -35,7 +30,7 @@ export class LineWebhookController {
     res.status(200).send('OK');
 
     const body = req.body;
-    const signature = req.headers[LINE_SIGNATURE_HEADER] as string;
+    const signature = req.headers[HTTP_HEADER.LINE_SIGNATURE_HEADER] as string;
 
     // Verify the signature
     if (!this.lineWebhookService.verifySignature(body, signature)) {

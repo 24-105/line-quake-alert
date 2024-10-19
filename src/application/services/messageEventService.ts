@@ -1,6 +1,5 @@
 import { WebhookEvent } from '@line/bot-sdk';
 import { Injectable, Logger } from '@nestjs/common';
-import { RESPONSE_MESSAGE_TRIGGER } from 'src/config/constants';
 import { IMessageEventService } from 'src/domain/interfaces/services/messageEventService';
 import { isMessageEvent, isTextMessage } from 'src/domain/useCase/webhookEvent';
 import { UserApi } from 'src/infrastructure/api/line/userApi';
@@ -13,20 +12,8 @@ import {
 import { createTextMessage } from 'src/domain/useCase/textMessage';
 import { PushMessageService } from './pushMessageService';
 import { createCorrespondingMessage } from 'src/domain/useCase/customMessage';
-
-// Log message constants
-const LOG_MESSAGES = {
-  NOT_MESSAGE_EVENT: 'This is not a MessageEvent',
-  MESSAGE_NOT_SUPPORTED: 'Message not supported',
-  TEXT_NOT_SUPPORTED: 'Text not supported',
-  HANDLING_WHERE_YOU_LIVE: 'Handling where you live',
-  HANDLING_WHERE_YOU_LIVE_FAILED: 'Failed to handling where you live',
-  HANDLING_QUAKE_SEISMIC_INTENSITY: 'Handling quake seismic intensity',
-  HANDLING_QUAKE_SEISMIC_INTENSITY_FAILED:
-    'Failed to handling quake seismic intensity',
-  HANDLING_CONTACT_ME_BY_CHAT: 'Handling contact me by chat',
-  HANDLING_CONTACT_ME_BY_CHAT_FAILED: 'Failed to handling contact me by chat',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
+import { RESPONSE_MESSAGE_TRIGGER } from 'src/config/constants/lineWebhook';
 
 /**
  * Message event service

@@ -5,17 +5,10 @@ import {
   FetchP2pQuakeHistoryRequestDto,
   fetchP2pQuakeHistoryResponseDto,
 } from 'src/application/dto/quakeHistoryDto';
-import { P2P_GET_QUAKE_HISTORY_URL } from 'src/config/constants';
 import { IP2pQuakeApi } from 'src/domain/interfaces/api/p2pQuake/p2pQuakeApi';
 import { createHeaders } from 'src/domain/useCase/http';
-
-// Log message constants
-const LOG_MESSAGES = {
-  REQUEST_FETCH_QUAKE_HISTORY:
-    'Requesting fetch quake history from the P2P Quake API',
-  REQUEST_FETCH_QUAKE_HISTORY_FAILED:
-    'Failed to fetch quake history from the P2P Quake API',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
+import { HTTP_URL } from 'src/config/constants/http';
 
 /**
  * P2P地震情報 API
@@ -46,12 +39,13 @@ export class P2pQuakeApi implements IP2pQuakeApi {
 
     try {
       const response = await firstValueFrom(
-        this.httpService.get(P2P_GET_QUAKE_HISTORY_URL, {
+        this.httpService.get(HTTP_URL.P2P_GET_QUAKE_HISTORY_URL, {
           params,
           headers,
           timeout: 5000,
         }),
       );
+
       return response.data;
     } catch (err) {
       this.logger.error(

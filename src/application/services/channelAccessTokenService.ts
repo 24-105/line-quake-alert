@@ -4,22 +4,8 @@ import { ChannelAccessTokenRepository } from 'src/infrastructure/repositories/ch
 import { generateJwt } from 'src/domain/useCase/jwt';
 import { ChannelAccessTokenApi } from 'src/infrastructure/api/line/channelAccessTokenApi';
 import { readKeyFile } from 'src/domain/useCase/file';
-import {
-  ADMIN_PRIVATE_KEY_FILE_PATH,
-  PRIVATE_KEY_FILE_PATH,
-} from 'src/config/constants';
-
-// Log message constants
-const LOG_MESSAGES = {
-  PROCESS_CHANNEL_ACCESS_TOKEN: 'Process channel access token',
-  GENERATE_JWT: 'Trying to generate JWT',
-  GENERATE_ADMIN_JWT: 'Trying to generate admin JWT',
-  GENERATE_JWT_FAILED: 'Failed to generate JWT',
-  GENERATE_JWT_ADMIN_FAILED: 'Failed to generate admin JWT',
-  FETCH_CHANNEL_ACCESS_TOKEN: 'Trying to fetch channel access token',
-  FETCH_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to fetch channel access token',
-  UPDATE_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to update channel access token',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
+import { FILE_PATH } from 'src/config/constants/filePath';
 
 /**
  * Channel access token service
@@ -40,8 +26,8 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
     this.logger.log(LOG_MESSAGES.PROCESS_CHANNEL_ACCESS_TOKEN);
 
     // read private key file
-    const privateKey = readKeyFile(PRIVATE_KEY_FILE_PATH);
-    const adminPrivateKey = readKeyFile(ADMIN_PRIVATE_KEY_FILE_PATH);
+    const privateKey = readKeyFile(FILE_PATH.PRIVATE_KEY_FILE_PATH);
+    const adminPrivateKey = readKeyFile(FILE_PATH.ADMIN_PRIVATE_KEY_FILE_PATH);
 
     try {
       const jwtList = await this.generateJwts(privateKey, adminPrivateKey);

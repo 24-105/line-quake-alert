@@ -3,24 +3,7 @@ import { IUserRepository } from 'src/domain/interfaces/repositories/userReposito
 import { User } from 'src/domain/entities/user';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-
-// Log message constants
-const LOG_MESSAGES = {
-  GET_USERS: 'Get users',
-  GET_USERS_FAILED: 'Failed to get users',
-  CHECK_USER_ID_EXISTS: 'Check if user id exists',
-  CHECK_USER_ID_FAILED: 'Failed to check if user id exists',
-  PUT_USER_ID: 'Put new user id',
-  PUT_USER_ID_FAILED: 'Failed to put userId',
-  DELETE_USER: 'Delete user',
-  DELETE_USER_FAILED: 'Failed to delete user',
-  UPDATE_USER_PREFECTURE: 'Update user prefecture',
-  UPDATE_USER_PREFECTURE_FAILED: 'Failed to update user prefecture',
-  UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY:
-    'Update user threshold seismic intensity',
-  UPDATE_USER_THRESHOLD_SEISMIC_INTENSITY_FAILED:
-    'Failed to update user threshold seismic intensity',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
 
 /**
  * User repository
