@@ -39,9 +39,9 @@ appCore:
   - changed-files:
       - any-glob-to-any-file: ['src/app.module.ts', 'src/main.ts']
 
-test:
+tests:
   - changed-files:
-      - any-glob-to-any-file: ['tests/**', 'src/test/**']
+      - any-glob-to-any-file: ['test/**', 'src/test/**']
 
 # Branch pattern
 feature:

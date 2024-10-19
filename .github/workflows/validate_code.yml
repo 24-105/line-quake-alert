@@ -7,6 +7,8 @@ on:
 
 permissions:
   checks: write
+  contents: read
+  pull-requests: write
 
 jobs:
   validate:
@@ -31,3 +33,4 @@ jobs:
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           test-script: npm run test:cov
+          github-token: ${{ secrets.GITHUB_TOKEN }}
