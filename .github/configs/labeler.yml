@@ -3,6 +3,10 @@ github:
   - changed-files:
       - any-glob-to-any-file: '.github/**'
 
+aws:
+  - changed-files:
+      - any-glob-to-any-file: 'cdk/**'
+
 public:
   - changed-files:
       - any-glob-to-any-file: 'public/**'
