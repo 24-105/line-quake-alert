@@ -2,14 +2,7 @@ import { WebhookEvent } from '@line/bot-sdk';
 import { IFollowEventService } from 'src/domain/interfaces/services/followEventService';
 import { UserService } from './userService';
 import { Injectable, Logger } from '@nestjs/common';
-
-// Log message constants
-const LOG_MESSAGES = {
-  HANDLING_FOLLOW_EVENT: 'Handling follow event',
-  HANDLING_FOLLOW_EVENT_FAILED: 'Failed to handling follow event',
-  HANDLING_UNFOLLOW_EVENT: 'Handling unfollow event',
-  HANDLING_UNFOLLOW_EVENT_FAILED: 'Failed to handling unfollow event',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
 
 /**
  * Follow event service

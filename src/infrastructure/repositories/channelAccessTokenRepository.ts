@@ -6,16 +6,9 @@ import {
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Logger } from '@nestjs/common';
 import { IChannelAccessTokenRepository } from 'src/domain/interfaces/repositories/channelAccessTokenRepository';
-import {
-  CHANNEL_ACCESS_TOKEN_TABLE_NAME,
-  CHANNEL_ACCESS_TOKEN_VALID_TIME,
-} from 'src/config/constants';
-
-// Log message constants
-const LOG_MESSAGES = {
-  PUT_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to put channel access token',
-  GET_CHANNEL_ACCESS_TOKEN_FAILED: 'Failed to get channel access token',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
+import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
+import { TABLE_NAME } from 'src/config/constants/tableName';
 
 /**
  * Channel access token repository
@@ -29,7 +22,7 @@ export class ChannelAccessTokenRepository
 
   constructor() {
     this.dynamoDbClient = this.createDynamoDbClient();
-    this.tableName = CHANNEL_ACCESS_TOKEN_TABLE_NAME;
+    this.tableName = TABLE_NAME.CHANNEL_ACCESS_TOKEN_TABLE_NAME;
   }
 
   /**
@@ -61,7 +54,7 @@ export class ChannelAccessTokenRepository
         channelId: channelId,
         channelAccessToken: channelAccessToken,
         keyId: keyId,
-        TTL: CHANNEL_ACCESS_TOKEN_VALID_TIME,
+        TTL: EXPIRATION_TIME.CHANNEL_ACCESS_TOKEN_VALID_TIME,
       },
     };
 

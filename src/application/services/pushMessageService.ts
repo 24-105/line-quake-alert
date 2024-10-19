@@ -3,12 +3,7 @@ import { MessageApi } from 'src/infrastructure/api/line/messageApi';
 import { createPushMessageRequest } from 'src/domain/useCase/pushMessage';
 import { IPushMessageService } from 'src/domain/interfaces/services/pushMessageService';
 import { Message } from '@line/bot-sdk/dist/messaging-api/model/models';
-
-// Log message constants
-const LOG_MESSAGES = {
-  PUSH_MESSAGE: 'Pushing message to the user',
-  PUSH_MESSAGE_FAILED: 'Failed to push message to the user',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
 
 /**
  * Push message service

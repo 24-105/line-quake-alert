@@ -1,24 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import {
-  LINE_API_OAUTH_TOKEN_URL,
-  LINE_API_OAUTH_VERIFY_URL,
-} from 'src/config/constants';
 import { IChannelAccessTokenApi } from 'src/domain/interfaces/api/line/channelAccessTokenApi';
 import { createEncodeHeaders } from 'src/domain/useCase/http';
 import { IssueChannelAccessTokenResponse } from '@line/bot-sdk/dist/channel-access-token/api';
 import { createChannelAccessTokenRequestParams } from 'src/domain/useCase/channelAccessToken';
-
-// Log message constants
-const LOG_MESSAGES = {
-  REQUEST_FETCH_CHANNEL_ACCESS_TOKEN:
-    'Requesting fetch channel access token from the LINE Messaging API',
-  FETCH_ACCESS_TOKEN_FAILED: 'Failed to fetch channel access token',
-  REQUEST_VERIFY_CHANNEL_ACCESS_TOKEN:
-    'Requesting verify channel access token from the LINE Messaging API',
-  VERIFY_ACCESS_TOKEN_FAILED: 'Failed to verify channel access token',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
+import { HTTP_URL } from 'src/config/constants/http';
 
 /**
  * LINE Channel access token API
@@ -40,7 +28,7 @@ export class ChannelAccessTokenApi implements IChannelAccessTokenApi {
   ): Promise<IssueChannelAccessTokenResponse> {
     this.logger.log(LOG_MESSAGES.REQUEST_FETCH_CHANNEL_ACCESS_TOKEN);
 
-    const url = LINE_API_OAUTH_TOKEN_URL;
+    const url = HTTP_URL.LINE_API_OAUTH_TOKEN_URL;
     const headers = createEncodeHeaders();
     const params = createChannelAccessTokenRequestParams(jwt);
 
@@ -63,7 +51,7 @@ export class ChannelAccessTokenApi implements IChannelAccessTokenApi {
   async verifyChannelAccessToken(channelAccessToken: string): Promise<boolean> {
     this.logger.log(LOG_MESSAGES.REQUEST_VERIFY_CHANNEL_ACCESS_TOKEN);
 
-    const url = `${LINE_API_OAUTH_VERIFY_URL}?access_token=${channelAccessToken}`;
+    const url = `${HTTP_URL.LINE_API_OAUTH_VERIFY_URL}?access_token=${channelAccessToken}`;
     const headers = createEncodeHeaders();
 
     try {

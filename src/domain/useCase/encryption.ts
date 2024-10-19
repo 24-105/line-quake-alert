@@ -1,9 +1,6 @@
 import * as crypto from 'crypto';
-import {
-  ENCRYPTION_ALGORITHM_AES_256_GCM,
-  HEX,
-  UTF8,
-} from 'src/config/constants';
+import { ENCRYPTION_ALGORITHM_AES_256_GCM } from 'src/config/constants/algorithm';
+import { HEX, UTF8 } from 'src/config/constants/encode';
 
 /**
  * Encrypt text

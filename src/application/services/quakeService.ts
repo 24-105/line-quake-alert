@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { IQuakeService } from 'src/domain/interfaces/services/quakeService';
 import { convertToUnixTime, getJstTime } from 'src/domain/useCase/date';
 import { QuakeHistoryRepository } from 'src/infrastructure/repositories/quakeHistoryRepository';
-import { isEventTimeValid } from 'src/domain/useCase/quakeEventTime';
+import { isEventTimeValid as isQuakeTimeValid } from 'src/domain/useCase/quakeEventTime';
 import { PointsScale } from 'src/domain/enum/quakeHistory/pointsEnum';
 import { P2pQuakeApi } from 'src/infrastructure/api/p2pQuake/p2pQuakeApi';
 import { UserService } from './userService';
@@ -19,26 +19,10 @@ import {
   createMainQuakeMessage,
   createSubQuakeMessage,
 } from 'src/domain/useCase/quakeMessage';
-import { QUAKE_ALT_MESSAGE } from 'src/config/constants';
 import { ChannelAccessTokenService } from './channelAccessTokenService';
 import { PushMessageService } from './pushMessageService';
 import { EncryptionService } from './encryptionService';
-
-// Log message constants
-const LOG_MESSAGES = {
-  PROCESS_QUAKE_HISTORY: 'Process quake history',
-  HISTORY_NOT_FOUND: 'No quake history found',
-  EVENT_TIME_NOT_VALID: 'Event time is not valid',
-  MAX_SCALE_NOT_FOUND: 'Max scale is not found',
-  MAX_SCALE_LESS: 'Max scale is less than',
-  QUAKE_ID_EXISTS: 'Quake id already exists',
-  PUT_QUAKE_ID_FAILED: 'Failed to put quakeId',
-  HISTORY_NOT_TARGETED: 'This history is not targeted',
-  PREFECTURES_NOT_FOUND: 'Prefectures are not included in the history',
-  TARGET_USERS_NOT_FOUND: 'There are no users targeted for distribution',
-  SEND_QUAKE_NOTICE: 'send quake notice',
-  SEND_QUAKE_NOTICE_FAILED: 'Failed to send quake notice',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
 
 /**
  * Quake service
@@ -79,7 +63,7 @@ export class QuakeService implements IQuakeService {
 
       // Determine if the quake history should be skipped
       if (await this.shouldSkipHistory(history, unixTimeNow)) {
-        this.logger.log(LOG_MESSAGES.HISTORY_NOT_TARGETED);
+        this.logger.log(LOG_MESSAGES.QUAKE_HISTORY_NOT_TARGETED);
         continue;
       }
 
@@ -89,7 +73,7 @@ export class QuakeService implements IQuakeService {
       // Extract prefectures by points
       const prefectures = await extractPrefecturesByPoints(history);
       if (prefectures.length === 0) {
-        this.logger.log(LOG_MESSAGES.PREFECTURES_NOT_FOUND);
+        this.logger.log(LOG_MESSAGES.PREFECTURES_NOT_INCLUDED);
         continue;
       }
 
@@ -144,7 +128,7 @@ export class QuakeService implements IQuakeService {
     );
 
     if (quakeHistory.length === 0) {
-      throw new Error(LOG_MESSAGES.HISTORY_NOT_FOUND);
+      throw new Error(LOG_MESSAGES.NOT_QUAKE_HISTORY_DATA);
     }
 
     return quakeHistory;
@@ -160,8 +144,8 @@ export class QuakeService implements IQuakeService {
     history: fetchP2pQuakeHistoryResponseDto,
     unixTimeNow: number,
   ): Promise<boolean> {
-    if (await isEventTimeValid(unixTimeNow, history.earthquake.time)) {
-      this.logger.log(LOG_MESSAGES.EVENT_TIME_NOT_VALID);
+    if (await isQuakeTimeValid(unixTimeNow, history.earthquake.time)) {
+      this.logger.log(LOG_MESSAGES.QUAKE_TIME_NOT_VALID);
       return true;
     }
 
@@ -209,7 +193,10 @@ export class QuakeService implements IQuakeService {
   ): Promise<FlexMessage> {
     const mainQuakeMessage = await createMainQuakeMessage(history);
     const flexBubble = await createFlexBubble(mainQuakeMessage);
-    return await createFlexMessage(QUAKE_ALT_MESSAGE, flexBubble);
+    return await createFlexMessage(
+      'お住まいの地域で地震が発生しました。',
+      flexBubble,
+    );
   }
 
   /**
@@ -222,7 +209,10 @@ export class QuakeService implements IQuakeService {
   ): Promise<FlexMessage> {
     const subQuakeMessage = await createSubQuakeMessage(points);
     const flexBubble = await createFlexBubble(subQuakeMessage);
-    return await createFlexMessage(QUAKE_ALT_MESSAGE, flexBubble);
+    return await createFlexMessage(
+      'お住まいの地域で地震が発生しました。',
+      flexBubble,
+    );
   }
 
   /**

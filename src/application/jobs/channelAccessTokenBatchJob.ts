@@ -2,16 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { ChannelAccessTokenService } from '../services/channelAccessTokenService';
 import { IChannelAccessTokenBatchJob } from 'src/domain/interfaces/jobs/channelAccessTokenBatchJob';
-
-// Log message constants
-const LOG_MESSAGES = {
-  START_PROCESS_CHANNEL_ACCESS_TOKEN_BATCH:
-    'Start process channel access token batch',
-  PROCESS_CHANNEL_ACCESS_TOKEN_BATCH_SUCCESS:
-    'Successfully processed channel access token',
-  PROCESS_CHANNEL_ACCESS_TOKEN_BATCH_FAILED:
-    'Failed to process channel access token',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
 
 /**
  * Channel access token batch job

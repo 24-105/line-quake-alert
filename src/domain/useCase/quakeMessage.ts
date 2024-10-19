@@ -6,7 +6,7 @@ import { convertSeismicIntensityToString } from './seismicIntensity';
 import { convertToCustomFormat } from './date';
 import { convertDomesticTsunamiToMessage } from './domesticTsunami';
 import { FlexBox } from '@line/bot-sdk/dist/messaging-api/model/models';
-import { YAHOO_WEATHER_JP_EARTHQUAKE } from 'src/config/constants';
+import { HTTP_URL } from 'src/config/constants/http';
 
 /**
  * Create main quake message
@@ -184,7 +184,7 @@ export const createMainQuakeMessage = async (
             action: {
               type: 'uri',
               label: 'Yahoo!天気・災害',
-              uri: YAHOO_WEATHER_JP_EARTHQUAKE,
+              uri: HTTP_URL.YAHOO_WEATHER_JP_EARTHQUAKE,
             },
           },
         ],

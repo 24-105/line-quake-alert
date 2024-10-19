@@ -1,18 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
-import { LINE_API_PUSH_MESSAGE_URL } from 'src/config/constants';
 import { IMessageApi } from 'src/domain/interfaces/api/line/messageApi';
 import { createAuthRetryHeaders } from 'src/domain/useCase/http';
 import { PushMessageRequest } from '@line/bot-sdk/dist/messaging-api/model/pushMessageRequest';
-
-// Log message constants
-const LOG_MESSAGES = {
-  REQUEST_PUSH_MESSAGE:
-    'Requesting to push a message via the LINE Messaging API',
-  POST_PUSH_MESSAGE_FAILED:
-    'Failed to post push message via the LINE Messaging API',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
+import { HTTP_URL } from 'src/config/constants/http';
 
 /**
  * LINE Message API
@@ -34,7 +27,7 @@ export class MessageApi implements IMessageApi {
   ): Promise<void> {
     this.logger.log(LOG_MESSAGES.REQUEST_PUSH_MESSAGE);
 
-    const url = LINE_API_PUSH_MESSAGE_URL;
+    const url = HTTP_URL.LINE_API_PUSH_MESSAGE_URL;
     const headers = createAuthRetryHeaders(channelAccessToken);
 
     try {

@@ -1,5 +1,8 @@
 import { TextMessage, WebhookEvent, MessageEvent } from '@line/bot-sdk';
-import { LINE_EVENT_TYPE, LINE_MESSAGE_TYPE } from 'src/config/constants';
+import {
+  LINE_EVENT_TYPE,
+  LINE_MESSAGE_TYPE,
+} from 'src/config/constants/lineWebhook';
 
 /**
  * Type guard to check if the event is a MessageEvent

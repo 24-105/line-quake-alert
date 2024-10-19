@@ -1,6 +1,6 @@
 import { format, toZonedTime } from 'date-fns-tz';
 import { parse } from 'date-fns';
-import { JAPAN_TIMEZONE } from 'src/config/constants';
+import { JAPAN_TIMEZONE } from 'src/config/constants/timeZone';
 
 /**
  * Get the current time in JST time

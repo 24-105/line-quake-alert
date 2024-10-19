@@ -4,16 +4,10 @@ import { WebhookEvent } from '@line/bot-sdk';
 import { ILineWebhookService } from 'src/domain/interfaces/services/lineWebhookService';
 import { MessageEventService } from './messageEventService';
 import { FollowEventService } from './followEventService';
-import {
-  BASE64,
-  ENCRYPTION_HASH_ALGORITHM_SHA256,
-  LINE_EVENT_TYPE,
-} from 'src/config/constants';
-
-// Log message constants
-const LOG_MESSAGES = {
-  EVENT_TYPE_NOT_SUPPORTED: 'Event types not supported',
-};
+import { LOG_MESSAGES } from 'src/config/logMessages';
+import { BASE64 } from 'src/config/constants/encode';
+import { LINE_EVENT_TYPE } from 'src/config/constants/lineWebhook';
+import { ENCRYPTION_HASH_ALGORITHM_SHA256 } from 'src/config/constants/algorithm';
 
 /**
  * LINE webhook service

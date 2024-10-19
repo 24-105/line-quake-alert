@@ -1,0 +1,3 @@
+export const ENCRYPTION_ALGORITHM_AES_256_GCM = 'aes-256-gcm';
+export const ENCRYPTION_HASH_ALGORITHM_SHA256 = 'sha256';
+export const SIGNATURE_ALGORITHM_RS256 = 'RS256';
