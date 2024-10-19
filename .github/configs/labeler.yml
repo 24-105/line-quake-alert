@@ -39,7 +39,7 @@ appCore:
   - changed-files:
       - any-glob-to-any-file: ['src/app.module.ts', 'src/main.ts']
 
-tests:
+test:
   - changed-files:
       - any-glob-to-any-file: ['test/**', 'src/test/**']
 
@@ -64,5 +64,3 @@ hotfix:
   - head-branch: ['^hotfix/']
 release:
   - head-branch: ['^release/']
-test:
-  - head-branch: ['^test/']
