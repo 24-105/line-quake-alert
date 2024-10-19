@@ -1,4 +1,4 @@
-import { DomesticTsunami } from '../enum/common/domesticTsunami';
+import { DomesticTsunami } from 'src/domain/enum/common/domesticTsunami';
 
 /**
  * Convert domestic tsunami to corresponding enum value

@@ -1,4 +1,4 @@
-import { SeismicIntensityScale } from '../enum/common/seismicIntensity';
+import { SeismicIntensityScale } from 'src/domain/enum/common/seismicIntensity';
 
 /**
  * Convert seismicIntensity scale to corresponding enum value

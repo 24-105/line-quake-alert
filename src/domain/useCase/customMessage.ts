@@ -1,4 +1,4 @@
-import { getJstTime } from './date';
+import { getJstTime } from 'src/domain/useCase/date';
 
 /**
  * Create corresponding message

@@ -1,5 +1,5 @@
 import { fetchP2pQuakeHistoryResponseDto } from 'src/application/dto/quakeHistoryDto';
-import { PointsScale } from '../enum/quakeHistory/pointsEnum';
+import { PointsScale } from 'src/domain/enum/quakeHistory/pointsEnum';
 import { RESPONSE_MESSAGE_TRIGGER } from 'src/config/constants/lineWebhook';
 
 /**
@@ -36,7 +36,7 @@ export const extractPrefecturesByPoints = async (
 
   if (history.points) {
     history.points
-      .filter((point) => point.scale >= PointsScale.SCALE10)
+      .filter((point) => point.scale >= PointsScale.SCALE40)
       .forEach((point) => {
         if (!prefectures.includes(point.pref)) {
           prefectures.push(point.pref);

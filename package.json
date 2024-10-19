@@ -93,7 +93,31 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/$1"
-    }
+    },
+    "testPathIgnorePatterns": [
+      "<rootDir>/appModule.ts",
+      "<rootDir>/main.ts",
+      "<rootDir>/application/dto",
+      "<rootDir>/domain/entities",
+      "<rootDir>/domain/enum",
+      "<rootDir>/domain/interfaces",
+      "<rootDir>/domain/models",
+      "<rootDir>/config/",
+      "<rootDir>/migration/",
+      "<rootDir>/modules/"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/appModule.ts",
+      "<rootDir>/main.ts",
+      "<rootDir>/application/dto",
+      "<rootDir>/domain/entities",
+      "<rootDir>/domain/enum",
+      "<rootDir>/domain/interfaces",
+      "<rootDir>/domain/models",
+      "<rootDir>/config/",
+      "<rootDir>/migration/",
+      "<rootDir>/modules/"
+    ]
   },
   "volta": {
     "node": "22.7.0"
