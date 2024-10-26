@@ -1,4 +1,4 @@
-import { Prefecture } from '../enum/common/prefecture';
+import { Prefecture } from 'src/domain/enum/common/prefecture';
 
 /**
  * Convert prefecture name to corresponding enum value

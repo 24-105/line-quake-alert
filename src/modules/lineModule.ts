@@ -5,9 +5,9 @@ import { LineWebhookService } from 'src/application/services/lineWebhookService'
 import { MessageEventService } from 'src/application/services/messageEventService';
 import { UserApi } from 'src/infrastructure/api/line/userApi';
 import { FollowEventService } from 'src/application/services/followEventService';
-import { UserModule } from './userModule';
-import { MessageModule } from './messageModule';
-import { ChannelAccessTokenModule } from './channelAccessTokenModule';
+import { UserModule } from 'src/modules/userModule';
+import { MessageModule } from 'src/modules/messageModule';
+import { ChannelAccessTokenModule } from 'src/modules/channelAccessTokenModule';
 
 /**
  * LINE module

@@ -7,7 +7,7 @@ import {
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
-import { PointsScale } from '../enum/quakeHistory/pointsEnum';
+import { PointsScale } from 'src/domain/enum/quakeHistory/pointsEnum';
 
 @Entity()
 @Unique(['user_id'])

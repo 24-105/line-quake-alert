@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { QuakeModule } from './modules/quakeModule';
-import { LineModule } from './modules/lineModule';
+import { QuakeModule } from 'src/modules/quakeModule';
+import { LineModule } from 'src/modules/lineModule';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
-import { AdminModule } from './modules/adminModule';
-import { AppDataSource } from './config/dataSource';
+import { AdminModule } from 'src/modules/adminModule';
+import { AppDataSource } from 'src/config/dataSource';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ChannelAccessTokenModule } from './modules/channelAccessTokenModule';
+import { ChannelAccessTokenModule } from 'src/modules/channelAccessTokenModule';
 
 /**
  * Application module

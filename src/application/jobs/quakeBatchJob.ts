@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { IQuakeBatchJob } from 'src/domain/interfaces/jobs/quakeBatchJob';
-import { QuakeService } from '../services/quakeService';
+import { QuakeService } from 'src/application/services/quakeService';
 import { LOG_MESSAGES } from 'src/config/logMessages';
 
 /**
@@ -16,7 +16,7 @@ export class QuakeBatchJob implements IQuakeBatchJob {
   /**
    * Batch process to fetch, save, and notify quake history
    */
-  @Cron(CronExpression.EVERY_5_SECONDS)
+  @Cron(CronExpression.EVERY_10_SECONDS)
   // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async processQuakeHistoryBatch(): Promise<void> {
     this.logger.log(LOG_MESSAGES.START_PROCESS_QUAKE_HISTORY_BATCH);

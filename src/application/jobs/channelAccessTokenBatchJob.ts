@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { ChannelAccessTokenService } from '../services/channelAccessTokenService';
+import { ChannelAccessTokenService } from 'src/application/services/channelAccessTokenService';
 import { IChannelAccessTokenBatchJob } from 'src/domain/interfaces/jobs/channelAccessTokenBatchJob';
 import { LOG_MESSAGES } from 'src/config/logMessages';
 

@@ -1,4 +1,4 @@
-import { IQuakeHistoryRepository } from 'src/domain/interfaces/repositories/quakeHitoryRepository';
+import { IQuakeHistoryRepository } from 'src/domain/interfaces/repositories/quakeHistoryRepository';
 import {
   DynamoDBDocumentClient,
   GetCommand,

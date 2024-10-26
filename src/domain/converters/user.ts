@@ -1,5 +1,5 @@
-import { User } from '../entities/user';
-import { UserModel } from '../models/user';
+import { User } from 'src/domain/entities/user';
+import { UserModel } from 'src/domain/models/user';
 
 /**
  * Convert user entity to user model
