@@ -17,28 +17,34 @@ describe('Date Use Case Tests', () => {
       });
 
       const result = getJstTime();
+
+      expect(typeof result).toBe('string');
       expect(result).toBe(expectedTime);
     });
   });
 
   describe('convertToUnixTime', () => {
     it('should convert a date string to Unix time', () => {
-      const dateString = '2023/10/01 12:00:00';
+      const dateString = '2024/01/01 00:00:00';
       const date = parse(dateString, 'yyyy/MM/dd HH:mm:ss', new Date());
       const expectedUnixTime = date.getTime() / 1000;
 
       const result = convertToUnixTime(dateString);
+
+      expect(typeof result).toBe('number');
       expect(result).toBe(expectedUnixTime);
     });
   });
 
   describe('convertToCustomFormat', () => {
     it('should convert a date string to custom format', () => {
-      const dateString = '2023/10/01 12:00:00';
+      const dateString = '2024/01/01 00:00:00';
       const date = parse(dateString, 'yyyy/MM/dd HH:mm:ss', new Date());
       const expectedFormattedDate = format(date, 'M月d日 H:mm:ss');
 
       const result = convertToCustomFormat(dateString);
+
+      expect(typeof result).toBe('string');
       expect(result).toBe(expectedFormattedDate);
     });
   });

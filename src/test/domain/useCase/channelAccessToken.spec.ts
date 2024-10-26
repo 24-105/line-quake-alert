@@ -1,14 +1,14 @@
 import { createChannelAccessTokenRequestParams } from 'src/domain/useCase/channelAccessToken';
 
 describe('createChannelAccessTokenRequestParams', () => {
-  it('should create URLSearchParams with the correct parameters', () => {
+  it('should return URLSearchParams', () => {
     const jwt = 'test-jwt-token';
-    const params = createChannelAccessTokenRequestParams(jwt);
+    const mockPrams =
+      'grant_type=client_credentials&client_assertion_type=urn%3Aietf%3Aparams%3Aoauth%3Aclient-assertion-type%3Ajwt-bearer&client_assertion=test-jwt-token';
 
-    expect(params.get('grant_type')).toBe('client_credentials');
-    expect(params.get('client_assertion_type')).toBe(
-      'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
-    );
-    expect(params.get('client_assertion')).toBe(jwt);
+    const result = createChannelAccessTokenRequestParams(jwt);
+
+    expect(result).toBeInstanceOf(URLSearchParams);
+    expect(result.toString()).toBe(mockPrams);
   });
 });

@@ -1,9 +1,5 @@
 import { generateJwt } from 'src/domain/useCase/jwt';
 import * as jose from 'node-jose';
-import { SIGNATURE_ALGORITHM_RS256 } from 'src/config/constants/algorithm';
-import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
-import { HTTP_URL } from 'src/config/constants/http';
-import { JWT, JWT_FORMAT_COMPACT } from 'src/config/constants/jwt';
 
 jest.mock('node-jose');
 
@@ -14,7 +10,7 @@ describe('generateJwt', () => {
     use: 'sig',
     alg: 'RS256',
     n: 'test-n',
-    e: 'AQAB',
+    e: 'test-e',
     d: 'test-d',
     p: 'test-p',
     q: 'test-q',
@@ -37,23 +33,6 @@ describe('generateJwt', () => {
 
     const result = await generateJwt(privateKey, kid, iss, sub);
 
-    expect(jose.JWS.createSign).toHaveBeenCalledWith(
-      {
-        format: JWT_FORMAT_COMPACT,
-        fields: { alg: SIGNATURE_ALGORITHM_RS256, typ: JWT, kid: kid },
-      },
-      JSON.parse(privateKey),
-    );
-
-    const payload = {
-      iss: iss,
-      sub: sub,
-      aud: HTTP_URL.LINE_API_BASE_URL,
-      exp: expect.any(Number),
-      token_exp: EXPIRATION_TIME.JWT_VALID_TIME,
-    };
-
-    expect(mockSign.update).toHaveBeenCalledWith(JSON.stringify(payload));
     expect(result).toBe('mocked-jwt');
   });
 

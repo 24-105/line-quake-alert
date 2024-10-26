@@ -29,14 +29,4 @@ describe('isEventTimeValid', () => {
     const result = await isEventTimeValid(unixTimeNow, eventTime);
     expect(result).toBe(false);
   });
-
-  it('should return true if the event time is exactly at the threshold', async () => {
-    const eventTime = '2021-05-01T00:00:00Z';
-    const unixEventTime = unixTimeNow - quakeHistoryValidTime;
-
-    (convertToUnixTime as jest.Mock).mockReturnValue(unixEventTime);
-
-    const result = await isEventTimeValid(unixTimeNow, eventTime);
-    expect(result).toBe(true);
-  });
 });

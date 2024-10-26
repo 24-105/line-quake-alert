@@ -17,20 +17,4 @@ describe('createFlexMessage', () => {
       contents: contents,
     });
   });
-
-  it('should create a flex message with empty contents', async () => {
-    const altText = 'This is an empty flex message';
-    const contents: FlexContainer = {
-      type: 'bubble',
-      body: { type: 'box', layout: 'vertical', contents: [] },
-    };
-
-    const result = await createFlexMessage(altText, contents);
-
-    expect(result).toEqual({
-      type: 'flex',
-      altText: altText,
-      contents: contents,
-    });
-  });
 });

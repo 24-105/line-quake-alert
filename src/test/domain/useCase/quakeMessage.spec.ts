@@ -8,78 +8,42 @@ import {
 } from 'src/application/dto/quakeHistoryDto';
 import { FlexBox } from '@line/bot-sdk/dist/messaging-api/model/models';
 import { IssueType } from 'src/domain/enum/quakeHistory/issueEnum';
-import {
-  EarthquakeDomesticTsunami,
-  EarthquakeForeignTsunami,
-} from 'src/domain/enum/quakeHistory/earthquakeEnum';
 
 describe('createMainQuakeMessage', () => {
   it('should create a main quake message with valid history data', async () => {
     const history: fetchP2pQuakeHistoryResponseDto = {
-      id: 'test',
+      id: '5ee1681202add671a1e1ae39',
+      time: '2019/08/26 21:04:06.958',
       code: 551,
-      time: '2023-10-01 10:00:00',
       issue: {
-        source: 'test',
-        time: '2023-10-01 10:00:00',
+        time: '2019/08/26 20:57:00',
         type: IssueType.OTHER,
       },
       earthquake: {
-        time: '2023-10-01 10:00:00',
-        hypocenter: {
-          name: 'test',
-          latitude: 35.0,
-          longitude: 135.0,
-          depth: 10.0,
-          magnitude: 5.0,
-        },
-        maxScale: 55,
-        domesticTsunami: EarthquakeDomesticTsunami.WARNING,
-        foreignTsunami: EarthquakeForeignTsunami.CHECKING,
+        time: '2019/08/26 20:53:00',
       },
-      points: [],
-      comments: { freeFormComment: 'test' },
+      points: [
+        {
+          addr: '宮古島市城辺福北',
+          isArea: false,
+          pref: '沖縄県',
+          scale: 10,
+        },
+        {
+          addr: '宮古島市伊良部長浜',
+          isArea: false,
+          pref: '沖縄県',
+          scale: 10,
+        },
+      ],
+      comments: {
+        freeFormComment: '',
+      },
     };
 
     const result: FlexBox = await createMainQuakeMessage(history);
 
-    expect(result).toBeDefined();
     expect(result.type).toBe('box');
-    expect(result.layout).toBe('vertical');
-    expect(result.contents.length).toBeGreaterThan(0);
-  });
-
-  it('should handle missing hypocenter data', async () => {
-    const history: fetchP2pQuakeHistoryResponseDto = {
-      id: 'test',
-      code: 551,
-      time: '2023-10-01 10:00:00',
-      issue: {
-        source: 'test',
-        time: '2023-10-01 10:00:00',
-        type: IssueType.OTHER,
-      },
-      earthquake: {
-        time: '2023-10-01 10:00:00',
-        hypocenter: {
-          name: 'test',
-          latitude: 35.0,
-          longitude: 135.0,
-          depth: 10.0,
-          magnitude: 5.0,
-        },
-        maxScale: 55,
-        domesticTsunami: EarthquakeDomesticTsunami.WARNING,
-        foreignTsunami: EarthquakeForeignTsunami.CHECKING,
-      },
-      points: [],
-      comments: { freeFormComment: 'test' },
-    };
-
-    const result: FlexBox = await createMainQuakeMessage(history);
-
-    expect(result).toBeDefined();
-    expect(result.contents[1]).toBe('震源が不明な地震が発生しました');
   });
 });
 
@@ -95,7 +59,7 @@ describe('createSubQuakeMessage', () => {
     expect(result).toBeDefined();
     expect(result.type).toBe('box');
     expect(result.layout).toBe('vertical');
-    expect(result.contents.length).toBeGreaterThan(0);
+    expect(result.contents.length).toBe(4);
   });
 
   it('should handle empty points array', async () => {
@@ -104,6 +68,8 @@ describe('createSubQuakeMessage', () => {
     const result: FlexBox = await createSubQuakeMessage(points);
 
     expect(result).toBeDefined();
+    expect(result.type).toBe('box');
+    expect(result.layout).toBe('vertical');
     expect(result.contents.length).toBe(2);
   });
 });

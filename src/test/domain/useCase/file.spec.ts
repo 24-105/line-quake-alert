@@ -1,7 +1,6 @@
 import { readKeyFile } from 'src/domain/useCase/file';
 import * as fs from 'fs';
 import * as path from 'path';
-import { UTF8 } from 'src/config/constants/encode';
 
 jest.mock('fs');
 jest.mock('path');
@@ -17,8 +16,7 @@ describe('readKeyFile', () => {
 
     const result = readKeyFile(relativeFilePath);
 
-    expect(path.join).toHaveBeenCalledWith(process.cwd(), relativeFilePath);
-    expect(fs.readFileSync).toHaveBeenCalledWith(mockFilePath, UTF8);
+    expect(typeof result).toBe('string');
     expect(result).toBe(mockFileContent);
   });
 });

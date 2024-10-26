@@ -6,11 +6,11 @@ describe('convertUser', () => {
   it('should convert User entity to UserModel', () => {
     const mockUser: User = {
       id: 1,
-      user_id: '123',
+      user_id: '12345',
       prefecture: 1,
       threshold_seismic_intensity: 40,
-      created_at: new Date('2021-01-01T00:00:00Z'),
-      updated_at: new Date('2021-01-02T00:00:00Z'),
+      created_at: new Date('2024-01-01T00:00:00Z'),
+      updated_at: new Date('2024-01-01T00:00:00Z'),
     };
 
     const userModel = convertUser(mockUser);
