@@ -13,20 +13,20 @@ describe('isEventTimeValid', () => {
   it('should return true if the event time is over the threshold', async () => {
     const eventTime = '2021-05-01T00:00:00Z';
     const unixEventTime = unixTimeNow - quakeHistoryValidTime - 1;
-
     (convertToUnixTime as jest.Mock).mockReturnValue(unixEventTime);
 
     const result = await isEventTimeValid(unixTimeNow, eventTime);
+
     expect(result).toBe(true);
   });
 
   it('should return false if the event time is within the threshold', async () => {
     const eventTime = '2021-05-01T00:00:00Z';
     const unixEventTime = unixTimeNow - quakeHistoryValidTime + 1;
-
     (convertToUnixTime as jest.Mock).mockReturnValue(unixEventTime);
 
     const result = await isEventTimeValid(unixTimeNow, eventTime);
+
     expect(result).toBe(false);
   });
 });

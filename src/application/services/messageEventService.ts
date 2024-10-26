@@ -1,7 +1,10 @@
 import { WebhookEvent } from '@line/bot-sdk';
 import { Injectable, Logger } from '@nestjs/common';
 import { IMessageEventService } from 'src/domain/interfaces/services/messageEventService';
-import { isMessageEvent, isTextMessage } from 'src/domain/useCase/webhookEvent';
+import {
+  isMessageEvent,
+  isTextEventMessage,
+} from 'src/domain/useCase/webhookEvent';
 import { UserApi } from 'src/infrastructure/api/line/userApi';
 import { ChannelAccessTokenService } from './channelAccessTokenService';
 import { UserService } from './userService';
@@ -39,7 +42,7 @@ export class MessageEventService implements IMessageEventService {
       return;
     }
 
-    if (!isTextMessage(event.message)) {
+    if (!isTextEventMessage(event.message)) {
       this.logger.log(
         `${LOG_MESSAGES.MESSAGE_NOT_SUPPORTED}: ${event.message.type}`,
       );

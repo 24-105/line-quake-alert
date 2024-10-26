@@ -11,6 +11,7 @@ jest.mock('crypto');
 describe('Header creation functions', () => {
   it('should create encode headers correctly', () => {
     const result = createEncodeHeaders();
+
     expect(result).toEqual({
       'Content-Type': 'application/x-www-form-urlencoded',
     });
@@ -18,12 +19,14 @@ describe('Header creation functions', () => {
 
   it('should create headers correctly', () => {
     const result = createHeaders();
+
     expect(result).toEqual({ 'Content-Type': 'application/json' });
   });
 
   it('should create auth headers correctly', () => {
     const channelAccessToken = 'testAccessToken';
     const result = createAuthHeaders(channelAccessToken);
+
     expect(result).toEqual({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${channelAccessToken}`,

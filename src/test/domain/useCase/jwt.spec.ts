@@ -28,7 +28,6 @@ describe('generateJwt', () => {
       update: jest.fn().mockReturnThis(),
       final: jest.fn().mockResolvedValue('mocked-jwt'),
     };
-
     (jose.JWS.createSign as jest.Mock).mockReturnValue(mockSign);
 
     const result = await generateJwt(privateKey, kid, iss, sub);
@@ -41,7 +40,6 @@ describe('generateJwt', () => {
       update: jest.fn().mockReturnThis(),
       final: jest.fn().mockRejectedValue(new Error('Signing failed')),
     };
-
     (jose.JWS.createSign as jest.Mock).mockReturnValue(mockSign);
 
     await expect(generateJwt(privateKey, kid, iss, sub)).rejects.toThrow(

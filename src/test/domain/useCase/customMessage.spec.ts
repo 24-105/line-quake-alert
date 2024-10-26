@@ -10,7 +10,6 @@ describe('createCorrespondingMessage', () => {
     const mockTime = '2024-10-01 10:00:00';
     const displayName = '山田太郎';
     const expectedMessage = `${mockTime}に ${displayName} 様からお問い合わせがありました。`;
-
     (getJstTime as jest.Mock).mockReturnValue(mockTime);
 
     const result = createCorrespondingMessage(displayName);

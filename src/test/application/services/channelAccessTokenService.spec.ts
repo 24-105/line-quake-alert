@@ -1,3 +1,4 @@
+import { Test, TestingModule } from '@nestjs/testing';
 import { ChannelAccessTokenService } from 'src/application/services/channelAccessTokenService';
 import { FILE_PATH } from 'src/config/constants/filePath';
 import { readKeyFile } from 'src/domain/useCase/file';
@@ -13,23 +14,38 @@ describe('ChannelAccessTokenService', () => {
   let channelAccessTokenApi: ChannelAccessTokenApi;
   let channelAccessTokenRepository: ChannelAccessTokenRepository;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        ChannelAccessTokenService,
+        {
+          provide: ChannelAccessTokenApi,
+          useValue: {
+            verifyChannelAccessToken: jest.fn(),
+            fetchChannelAccessToken: jest.fn(),
+          },
+        },
+        {
+          provide: ChannelAccessTokenRepository,
+          useValue: {
+            getChannelAccessToken: jest.fn(),
+            putChannelAccessToken: jest.fn(),
+          },
+        },
+      ],
+    }).compile();
+
+    service = module.get<ChannelAccessTokenService>(ChannelAccessTokenService);
+    channelAccessTokenApi = module.get<ChannelAccessTokenApi>(
+      ChannelAccessTokenApi,
+    );
+    channelAccessTokenRepository = module.get<ChannelAccessTokenRepository>(
+      ChannelAccessTokenRepository,
+    );
+
     process.env.LINE_QUALE_QUICK_ALERT_SECRET = 'test_secret';
     process.env.LINE_QUALE_QUICK_ALERT_ISS = 'test_iss';
     process.env.LINE_QUALE_QUICK_ALERT_ADMIN_ISS = 'test_admin_iss';
-
-    channelAccessTokenApi = {
-      verifyChannelAccessToken: jest.fn(),
-      fetchChannelAccessToken: jest.fn(),
-    } as any;
-    channelAccessTokenRepository = {
-      getChannelAccessToken: jest.fn(),
-      putChannelAccessToken: jest.fn(),
-    } as any;
-    service = new ChannelAccessTokenService(
-      channelAccessTokenApi,
-      channelAccessTokenRepository,
-    );
   });
 
   describe('processChannelAccessToken', () => {

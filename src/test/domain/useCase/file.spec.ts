@@ -10,7 +10,6 @@ describe('readKeyFile', () => {
     const relativeFilePath = 'test/key.pem';
     const mockFilePath = `/mocked/path/${relativeFilePath}`;
     const mockFileContent = 'mocked private key content';
-
     (path.join as jest.Mock).mockReturnValue(mockFilePath);
     (fs.readFileSync as jest.Mock).mockReturnValue(mockFileContent);
 

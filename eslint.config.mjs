@@ -34,6 +34,6 @@ export default [
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
     },
-    ignores: ['.eslintrc.js'],
+    ignores: ['.eslintrc.js', 'src/test/**/*.ts'],
   },
 ];

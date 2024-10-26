@@ -1,23 +1,25 @@
-import { isMessageEvent, isTextMessage } from 'src/domain/useCase/webhookEvent';
-import { WebhookEvent, MessageEvent, TextMessage } from '@line/bot-sdk';
 import {
-  LINE_EVENT_TYPE,
-  LINE_MESSAGE_TYPE,
-} from 'src/config/constants/lineWebhook';
+  isMessageEvent,
+  isTextEventMessage,
+} from 'src/domain/useCase/webhookEvent';
+import { WebhookEvent, TextEventMessage } from '@line/bot-sdk';
 
 describe('isMessageEvent', () => {
   it('should return true for a valid MessageEvent', () => {
-    const event: MessageEvent = {
-      type: LINE_EVENT_TYPE.MESSAGE,
+    const event: WebhookEvent = {
+      type: 'message',
       message: {
         type: 'text',
-        id: '1234567890',
         text: 'Hello, world!',
+        quoteToken: 'quoteToken',
+        id: '12345',
       },
       replyToken: 'replyToken',
+      webhookEventId: 'test',
+      deliveryContext: { isRedelivery: false },
       source: {
         type: 'user',
-        userId: 'userId',
+        userId: '12345',
       },
       timestamp: 1234567890,
       mode: 'active',
@@ -28,29 +30,42 @@ describe('isMessageEvent', () => {
 
   it('should return false for an invalid MessageEvent', () => {
     const event: WebhookEvent = {
-      type: 'other_event_type',
-    } as WebhookEvent;
+      type: 'follow',
+      replyToken: 'replyToken',
+      webhookEventId: 'test',
+      deliveryContext: { isRedelivery: false },
+      source: {
+        type: 'user',
+        userId: '12345',
+      },
+      timestamp: 1234567890,
+      mode: 'active',
+    };
 
     expect(isMessageEvent(event)).toBe(false);
   });
 });
 
-describe('isTextMessage', () => {
-  it('should return true for a valid TextMessage', () => {
-    const message: TextMessage = {
-      type: LINE_MESSAGE_TYPE.TEXT,
+describe('TextEventMessage', () => {
+  it('should return true for a valid TextEventMessage', () => {
+    const message: TextEventMessage = {
+      type: 'text',
       text: 'Hello, world!',
+      quoteToken: 'quoteToken',
+      id: '12345',
     };
 
-    expect(isTextMessage(message)).toBe(true);
+    expect(isTextEventMessage(message)).toBe(true);
   });
 
-  it('should return false for an invalid TextMessage', () => {
+  it('should return false for an invalid TextEventMessage', () => {
     const message = {
-      type: 'other_message_type',
+      type: 'mock',
       text: 'Hello, world!',
+      quoteToken: 'quoteToken',
+      id: '12345',
     };
 
-    expect(isTextMessage(message)).toBe(false);
+    expect(isTextEventMessage(message)).toBe(false);
   });
 });

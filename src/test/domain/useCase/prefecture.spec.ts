@@ -6,18 +6,21 @@ describe('convertPrefectureToNumber', () => {
     const prefectureName = '北海道';
     const expectedValue = Prefecture.北海道;
     const result = convertPrefectureToNumber(prefectureName);
+
     expect(result).toBe(expectedValue);
   });
 
   it('should return null for an invalid prefecture name', () => {
     const prefectureName = 'InvalidPrefecture';
     const result = convertPrefectureToNumber(prefectureName);
+
     expect(result).toBeNull();
   });
 
   it('should return null for an empty string', () => {
     const prefectureName = '';
     const result = convertPrefectureToNumber(prefectureName);
+
     expect(result).toBeNull();
   });
 
@@ -26,6 +29,7 @@ describe('convertPrefectureToNumber', () => {
     const result = convertPrefectureToNumber(
       prefectureName as unknown as string,
     );
+
     expect(result).toBeNull();
   });
 
@@ -34,6 +38,7 @@ describe('convertPrefectureToNumber', () => {
     const result = convertPrefectureToNumber(
       prefectureName as unknown as string,
     );
+
     expect(result).toBeNull();
   });
 });

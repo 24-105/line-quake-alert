@@ -24,6 +24,7 @@ describe('createPushMessageRequest', () => {
       notificationDisabled,
       customAggregationUnits,
     );
+
     expect(result).toEqual(expectedRequest);
   });
 
@@ -39,6 +40,7 @@ describe('createPushMessageRequest', () => {
     };
 
     const result = await createPushMessageRequest(userId, message);
+
     expect(result).toEqual(expectedRequest);
   });
 
@@ -59,6 +61,7 @@ describe('createPushMessageRequest', () => {
       message,
       notificationDisabled,
     );
+
     expect(result).toEqual(expectedRequest);
   });
 
@@ -80,6 +83,7 @@ describe('createPushMessageRequest', () => {
       undefined,
       customAggregationUnits,
     );
+
     expect(result).toEqual(expectedRequest);
   });
 });

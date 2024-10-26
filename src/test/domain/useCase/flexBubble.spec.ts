@@ -17,8 +17,6 @@ describe('createFlexBubble', () => {
     const footer: FlexBox = { type: 'box', layout: 'vertical', contents: [] };
     const action: Action = {
       type: 'uri',
-      label: 'View',
-      uri: 'https://example.com',
     };
     const direction: FlexBubble.DirectionEnum = 'ltr';
     const size: FlexBubble.SizeEnum = 'mega';
