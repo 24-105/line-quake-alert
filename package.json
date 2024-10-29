@@ -52,7 +52,7 @@
     "@nestjs/cli": "^10.0.0",
     "@nestjs/schedule": "^4.1.1",
     "@nestjs/schematics": "^10.2.2",
-    "@nestjs/testing": "^10.4.4",
+    "@nestjs/testing": "^10.4.6",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.2",
     "@types/node": "^22.7.7",
