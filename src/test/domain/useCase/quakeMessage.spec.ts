@@ -3,7 +3,7 @@ import {
   createSubQuakeMessage,
 } from 'src/domain/useCase/quakeMessage';
 import {
-  fetchP2pQuakeHistoryResponseDto,
+  receiveP2pQuakeHistoryResponseDto,
   QuakeHistoryPoints,
 } from 'src/application/dto/quakeHistoryDto';
 import { FlexBox } from '@line/bot-sdk/dist/messaging-api/model/models';
@@ -11,7 +11,7 @@ import { IssueType } from 'src/domain/enum/quakeHistory/issueEnum';
 
 describe('createMainQuakeMessage', () => {
   it('should create a main quake message with valid history data', async () => {
-    const history: fetchP2pQuakeHistoryResponseDto = {
+    const history: receiveP2pQuakeHistoryResponseDto = {
       id: '5ee1681202add671a1e1ae39',
       time: '2019/08/26 21:04:06.958',
       code: 551,
