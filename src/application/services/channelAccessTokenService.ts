@@ -101,7 +101,7 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
 
     try {
       this.logger.log(LOG_MESSAGES.GENERATE_JWT);
-      const jwt = await generateJwt(
+      const jwt = generateJwt(
         privateKey,
         process.env.LINE_QUALE_QUICK_ALERT_KID,
         process.env.LINE_QUALE_QUICK_ALERT_ISS,
@@ -115,7 +115,7 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
 
     try {
       this.logger.log(LOG_MESSAGES.GENERATE_ADMIN_JWT);
-      const jwt = await generateJwt(
+      const jwt = generateJwt(
         adminPrivateKey,
         process.env.LINE_QUALE_QUICK_ALERT_ADMIN_KID,
         process.env.LINE_QUALE_QUICK_ALERT_ADMIN_ISS,
