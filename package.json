@@ -22,7 +22,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.679.0",
+    "@aws-sdk/client-dynamodb": "^3.682.0",
     "@aws-sdk/lib-dynamodb": "^3.679.0",
     "@aws-sdk/util-dynamodb": "^3.670.0",
     "@line/bot-sdk": "^9.4.1",
