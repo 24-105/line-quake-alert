@@ -9,10 +9,10 @@ import {
  * @param flexContainer flex container
  * @returns message
  */
-export const createFlexMessage = async (
+export const createFlexMessage = (
   altText: string,
   contents: FlexContainer,
-): Promise<FlexMessage> => {
+): FlexMessage => {
   return {
     type: 'flex',
     altText: altText,

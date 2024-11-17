@@ -3,7 +3,6 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
-  Min,
 } from '@nestjs/class-validator';
 
 import {
@@ -96,7 +95,7 @@ export class QuakeHistoryComments {
 }
 
 // P2P地震情報 API quake history response Dto
-export class fetchP2pQuakeHistoryResponseDto {
+export class receiveP2pQuakeHistoryResponseDto {
   @IsNotEmpty()
   @IsString()
   id: string;
@@ -119,22 +118,4 @@ export class fetchP2pQuakeHistoryResponseDto {
 
   @IsNotEmpty()
   comments: QuakeHistoryComments;
-}
-
-// P2P地震情報 API quake history request Dto
-export class FetchP2pQuakeHistoryRequestDto {
-  @IsNotEmpty()
-  @IsNumber()
-  @Min(0)
-  codes: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @Min(1)
-  limit: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  @Min(0)
-  offset: number;
 }

@@ -15,7 +15,7 @@ describe('isEventTimeValid', () => {
     const unixEventTime = unixTimeNow - quakeHistoryValidTime - 1;
     (convertToUnixTime as jest.Mock).mockReturnValue(unixEventTime);
 
-    const result = await isEventTimeValid(unixTimeNow, eventTime);
+    const result = isEventTimeValid(unixTimeNow, eventTime);
 
     expect(result).toBe(true);
   });
@@ -25,7 +25,7 @@ describe('isEventTimeValid', () => {
     const unixEventTime = unixTimeNow - quakeHistoryValidTime + 1;
     (convertToUnixTime as jest.Mock).mockReturnValue(unixEventTime);
 
-    const result = await isEventTimeValid(unixTimeNow, eventTime);
+    const result = isEventTimeValid(unixTimeNow, eventTime);
 
     expect(result).toBe(false);
   });

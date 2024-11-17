@@ -1,4 +1,4 @@
-import { fetchP2pQuakeHistoryResponseDto } from 'src/application/dto/quakeHistoryDto';
+import { receiveP2pQuakeHistoryResponseDto } from 'src/application/dto/quakeHistoryDto';
 import { PointsScale } from 'src/domain/enum/quakeHistory/pointsEnum';
 import { RESPONSE_MESSAGE_TRIGGER } from 'src/config/constants/lineWebhook';
 
@@ -29,9 +29,9 @@ export const extractSeismicIntensity = (text: string): string | null => {
  * @param history Quake history object
  * @returns prefectures
  */
-export const extractPrefecturesByPoints = async (
-  history: fetchP2pQuakeHistoryResponseDto,
-): Promise<string[]> => {
+export const extractPrefecturesByPoints = (
+  history: receiveP2pQuakeHistoryResponseDto,
+): string[] => {
   const prefectures: string[] = [];
 
   if (history.points) {

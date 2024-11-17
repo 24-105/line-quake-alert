@@ -10,11 +10,11 @@ import {
  * @param quoteToken quote token
  * @returns message
  */
-export const createTextMessage = async (
+export const createTextMessage = (
   message: string,
   emoji?: Emoji[],
   quoteToken?: string,
-): Promise<TextMessage> => {
+): TextMessage => {
   return {
     type: 'text',
     text: message,
