@@ -33,6 +33,7 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'error',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+      'no-return-await': 'error',
     },
     ignores: ['.eslintrc.js', 'src/test/**/*.ts'],
   },

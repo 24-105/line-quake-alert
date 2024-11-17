@@ -17,7 +17,7 @@ import {
  * @param action action
  * @returns message
  */
-export const createFlexBubble = async (
+export const createFlexBubble = (
   body: FlexBox,
   direction?: FlexBubble.DirectionEnum,
   header?: FlexBox,
@@ -25,7 +25,7 @@ export const createFlexBubble = async (
   footer?: FlexBox,
   size?: FlexBubble.SizeEnum,
   action?: Action,
-): Promise<FlexBubble> => {
+): FlexBubble => {
   return {
     type: 'bubble',
     direction: direction,
