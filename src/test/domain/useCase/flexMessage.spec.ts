@@ -9,7 +9,7 @@ describe('createFlexMessage', () => {
       body: { type: 'box', layout: 'vertical', contents: [] },
     };
 
-    const result = await createFlexMessage(altText, contents);
+    const result = createFlexMessage(altText, contents);
 
     expect(result).toEqual({
       type: 'flex',

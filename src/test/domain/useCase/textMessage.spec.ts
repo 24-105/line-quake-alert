@@ -7,7 +7,7 @@ import {
 describe('createTextMessage', () => {
   it('should create a text message with only message parameter', async () => {
     const message = 'Hello, world!';
-    const result: TextMessage = await createTextMessage(message);
+    const result: TextMessage = createTextMessage(message);
 
     expect(result).toEqual({
       type: 'text',
@@ -26,7 +26,7 @@ describe('createTextMessage', () => {
         emojiId: '001',
       },
     ];
-    const result: TextMessage = await createTextMessage(message, emojis);
+    const result: TextMessage = createTextMessage(message, emojis);
 
     expect(result).toEqual({
       type: 'text',
@@ -46,11 +46,7 @@ describe('createTextMessage', () => {
       },
     ];
     const quoteToken = 'quote123';
-    const result: TextMessage = await createTextMessage(
-      message,
-      emojis,
-      quoteToken,
-    );
+    const result: TextMessage = createTextMessage(message, emojis, quoteToken);
 
     expect(result).toEqual({
       type: 'text',
