@@ -68,7 +68,7 @@ describe('UserService', () => {
   it('should ensure user id exists', async () => {
     const userId = '123';
     const encryptedUserId = 'encrypted123';
-    jest.spyOn(encryptionService, 'encrypt').mockResolvedValue(encryptedUserId);
+    jest.spyOn(encryptionService, 'encrypt').mockReturnValue(encryptedUserId);
     jest.spyOn(userRepository, 'isUserIdExists').mockResolvedValue(false);
     jest.spyOn(userRepository, 'putUserId').mockResolvedValue(undefined);
 
@@ -82,7 +82,7 @@ describe('UserService', () => {
   it('should delete user', async () => {
     const userId = '123';
     const encryptedUserId = 'encrypted123';
-    jest.spyOn(encryptionService, 'encrypt').mockResolvedValue(encryptedUserId);
+    jest.spyOn(encryptionService, 'encrypt').mockReturnValue(encryptedUserId);
     jest.spyOn(userRepository, 'deleteUser').mockResolvedValue(undefined);
 
     await userService.deleteUser(userId);
@@ -95,7 +95,7 @@ describe('UserService', () => {
     const userId = '123';
     const prefecture = 'Tokyo';
     const encryptedUserId = 'encrypted123';
-    jest.spyOn(encryptionService, 'encrypt').mockResolvedValue(encryptedUserId);
+    jest.spyOn(encryptionService, 'encrypt').mockReturnValue(encryptedUserId);
     jest
       .spyOn(userRepository, 'updateUserPrefecture')
       .mockResolvedValue(undefined);
@@ -113,7 +113,7 @@ describe('UserService', () => {
     const userId = '123';
     const seismicIntensity = '5';
     const encryptedUserId = 'encrypted123';
-    jest.spyOn(encryptionService, 'encrypt').mockResolvedValue(encryptedUserId);
+    jest.spyOn(encryptionService, 'encrypt').mockReturnValue(encryptedUserId);
     jest
       .spyOn(userRepository, 'updateUserSeismicIntensity')
       .mockResolvedValue(undefined);

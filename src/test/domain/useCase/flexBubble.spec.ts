@@ -21,7 +21,7 @@ describe('createFlexBubble', () => {
     const direction: FlexBubble.DirectionEnum = 'ltr';
     const size: FlexBubble.SizeEnum = 'mega';
 
-    const result = await createFlexBubble(
+    const result = createFlexBubble(
       body,
       direction,
       header,
@@ -51,7 +51,7 @@ describe('createFlexBubble', () => {
   it('should create a flex bubble with only required properties', async () => {
     const body: FlexBox = { type: 'box', layout: 'vertical', contents: [] };
 
-    const result = await createFlexBubble(body);
+    const result = createFlexBubble(body);
 
     expect(result).toEqual({
       type: 'bubble',

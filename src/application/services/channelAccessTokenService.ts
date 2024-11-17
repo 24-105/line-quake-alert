@@ -30,7 +30,7 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
     const adminPrivateKey = readKeyFile(FILE_PATH.ADMIN_PRIVATE_KEY_FILE_PATH);
 
     try {
-      const jwtList = await this.generateJwts(privateKey, adminPrivateKey);
+      const jwtList = this.generateJwts(privateKey, adminPrivateKey);
       await this.updateChannelAccessTokens(jwtList);
     } catch (err) {
       this.logger.error(
@@ -55,7 +55,7 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
       return channelAccessToken;
     }
 
-    return await this.refreshChannelAccessToken(channelIss);
+    return this.refreshChannelAccessToken(channelIss);
   }
 
   /**
@@ -64,9 +64,7 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
    * @returns channel access token
    */
   private async getChannelAccessToken(channelIss: string): Promise<string> {
-    return await this.channelAccessTokenRepository.getChannelAccessToken(
-      channelIss,
-    );
+    return this.channelAccessTokenRepository.getChannelAccessToken(channelIss);
   }
 
   /**
@@ -75,7 +73,7 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
    * @returns true if valid, false otherwise
    */
   private async verifyChannelAccessToken(token: string): Promise<boolean> {
-    return await this.channelAccessTokenApi.verifyChannelAccessToken(token);
+    return this.channelAccessTokenApi.verifyChannelAccessToken(token);
   }
 
   /**
@@ -84,7 +82,7 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
    */
   private async refreshChannelAccessToken(channelIss: string): Promise<string> {
     await this.processChannelAccessToken();
-    return await this.getChannelAccessToken(channelIss);
+    return this.getChannelAccessToken(channelIss);
   }
 
   /**
@@ -93,10 +91,10 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
    * @param adminPrivateKey Admin private key
    * @returns JWTs
    */
-  private async generateJwts(
+  private generateJwts(
     privateKey: string,
     adminPrivateKey: string,
-  ): Promise<{ jwt: string; iss: string }[]> {
+  ): { jwt: string; iss: string }[] {
     const jwtList = [];
 
     try {

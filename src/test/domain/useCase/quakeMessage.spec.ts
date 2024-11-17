@@ -41,7 +41,7 @@ describe('createMainQuakeMessage', () => {
       },
     };
 
-    const result: FlexBox = await createMainQuakeMessage(history);
+    const result: FlexBox = createMainQuakeMessage(history);
 
     expect(result.type).toBe('box');
   });
@@ -54,7 +54,7 @@ describe('createSubQuakeMessage', () => {
       { pref: '大阪府', addr: 'test', isArea: true, scale: 40 },
     ];
 
-    const result: FlexBox = await createSubQuakeMessage(points);
+    const result: FlexBox = createSubQuakeMessage(points);
 
     expect(result).toBeDefined();
     expect(result.type).toBe('box');
@@ -65,7 +65,7 @@ describe('createSubQuakeMessage', () => {
   it('should handle empty points array', async () => {
     const points: QuakeHistoryPoints[] = [];
 
-    const result: FlexBox = await createSubQuakeMessage(points);
+    const result: FlexBox = createSubQuakeMessage(points);
 
     expect(result).toBeDefined();
     expect(result.type).toBe('box');

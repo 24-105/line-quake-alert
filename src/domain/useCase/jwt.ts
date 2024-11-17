@@ -17,7 +17,7 @@ export const generateJwt = (
   kid: string,
   iss: string,
   sub: string,
-): Promise<string> => {
+): string => {
   const header = {
     alg: SIGNATURE_ALGORITHM_RS256,
     typ: JWT,

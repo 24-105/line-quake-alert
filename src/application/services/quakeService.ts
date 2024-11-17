@@ -97,9 +97,6 @@ export class QuakeService {
     history: receiveP2pQuakeHistoryResponseDto,
   ): Promise<void> {
     this.logger.log(LOG_MESSAGES.PROCESS_QUAKE_HISTORY);
-    console.log('=======================');
-    console.log('history', history);
-    console.log('=======================');
 
     // Process each quake history
     const unixTimeNow = convertToUnixTime(getJstTime());
@@ -142,7 +139,7 @@ export class QuakeService {
 
         // Send notice
         await this.limiter.schedule(async () => {
-          return await this.sendQuakeNotice(
+          return this.sendQuakeNotice(
             user.userId,
             flexMainMessage,
             flexSubMessage,
@@ -250,7 +247,7 @@ export class QuakeService {
           process.env.LINE_QUALE_QUICK_ALERT_ISS,
         );
 
-      const decryptedUserId = await this.encryptionService.decrypt(userId);
+      const decryptedUserId = this.encryptionService.decrypt(userId);
 
       await this.pushMessageService.pushMessage(
         channelAccessToken,
