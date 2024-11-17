@@ -54,7 +54,7 @@ describe('ChannelAccessTokenService', () => {
       (readKeyFile as jest.Mock).mockReturnValueOnce('adminPrivateKey');
       jest
         .spyOn(service as any, 'generateJwts')
-        .mockResolvedValue([{ jwt: 'jwt', iss: 'iss' }]);
+        .mockReturnValue([{ jwt: 'jwt', iss: 'iss' }]);
       jest
         .spyOn(service as any, 'updateChannelAccessTokens')
         .mockResolvedValue('jwtList');
@@ -155,7 +155,7 @@ describe('ChannelAccessTokenService', () => {
     });
 
     it('should generate JWTs', async () => {
-      (generateJwt as jest.Mock).mockResolvedValue('jwt');
+      (generateJwt as jest.Mock).mockReturnValue('jwt');
 
       const result = await service['generateJwts'](
         'privateKey',

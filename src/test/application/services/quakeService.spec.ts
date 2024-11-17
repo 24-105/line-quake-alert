@@ -1,29 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { QuakeService } from '../../../application/services/quakeService';
-import { UserService } from '../../../application/services/userService';
-import { ChannelAccessTokenService } from '../../../application/services/channelAccessTokenService';
-import { PushMessageService } from '../../../application/services/pushMessageService';
-import { EncryptionService } from '../../../application/services/encryptionService';
-import { P2pQuakeApi } from '../../../infrastructure/api/p2pQuake/p2pQuakeApi';
-import { QuakeHistoryRepository } from '../../../infrastructure/repositories/quakeHistoryRepository';
-import { convertToUnixTime, getJstTime } from '../../../domain/useCase/date';
-import { isEventTimeValid as isQuakeTimeValid } from '../../../domain/useCase/quakeEventTime';
-import { extractPrefecturesByPoints } from '../../../domain/useCase/extractText';
+import { QuakeService } from 'src/application/services/quakeService';
+import { UserService } from 'src/application/services/userService';
+import { ChannelAccessTokenService } from 'src/application/services/channelAccessTokenService';
+import { PushMessageService } from 'src/application/services/pushMessageService';
+import { EncryptionService } from 'src/application/services/encryptionService';
+import { QuakeHistoryRepository } from 'src/infrastructure/repositories/quakeHistoryRepository';
+import { receiveP2pQuakeHistoryResponseDto } from 'src/application/dto/quakeHistoryDto';
+import { IssueType } from 'src/domain/enum/quakeHistory/issueEnum';
+import { PointsScale } from 'src/domain/enum/quakeHistory/pointsEnum';
+import { WebSocket } from 'ws';
+import { convertToUnixTime, getJstTime } from 'src/domain/useCase/date';
+import { isEventTimeValid as isQuakeTimeValid } from 'src/domain/useCase/quakeEventTime';
+import { extractPrefecturesByPoints } from 'src/domain/useCase/extractText';
 import {
   createMainQuakeMessage,
   createSubQuakeMessage,
-} from '../../../domain/useCase/quakeMessage';
-import { createFlexBubble } from '../../../domain/useCase/flexBubble';
-import { createFlexMessage } from '../../../domain/useCase/flexMessage';
-import { LOG_MESSAGES } from '../../../config/logMessages';
-import Bottleneck from 'bottleneck';
+} from 'src/domain/useCase/quakeMessage';
+import { createFlexBubble } from 'src/domain/useCase/flexBubble';
+import { createFlexMessage } from 'src/domain/useCase/flexMessage';
 
-jest.mock('../../../domain/useCase/date');
-jest.mock('../../../domain/useCase/quakeEventTime');
-jest.mock('../../../domain/useCase/extractText');
-jest.mock('../../../domain/useCase/quakeMessage');
-jest.mock('../../../domain/useCase/flexBubble');
-jest.mock('../../../domain/useCase/flexMessage');
+jest.mock('src/domain/useCase/date');
+jest.mock('src/domain/useCase/quakeEventTime');
+jest.mock('src/domain/useCase/extractText');
+jest.mock('src/domain/useCase/quakeMessage');
+jest.mock('src/domain/useCase/flexBubble');
+jest.mock('src/domain/useCase/flexMessage');
 
 describe('QuakeService', () => {
   let service: QuakeService;
@@ -31,10 +32,13 @@ describe('QuakeService', () => {
   let channelAccessTokenService: ChannelAccessTokenService;
   let pushMessageService: PushMessageService;
   let encryptionService: EncryptionService;
-  let p2pQuakeApi: P2pQuakeApi;
   let quakeHistoryRepository: QuakeHistoryRepository;
+  let ws: WebSocket;
 
   beforeEach(async () => {
+    process.env.P2P_QUAKE_WS_URL =
+      'wss://api-realtime-sandbox.p2pquake.net/v2/ws';
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         QuakeService,
@@ -48,7 +52,6 @@ describe('QuakeService', () => {
         },
         { provide: PushMessageService, useValue: { pushMessage: jest.fn() } },
         { provide: EncryptionService, useValue: { decrypt: jest.fn() } },
-        { provide: P2pQuakeApi, useValue: { fetchP2pQuakeHistory: jest.fn() } },
         {
           provide: QuakeHistoryRepository,
           useValue: { isQuakeIdExists: jest.fn(), putQuakeId: jest.fn() },
@@ -63,21 +66,38 @@ describe('QuakeService', () => {
     );
     pushMessageService = module.get<PushMessageService>(PushMessageService);
     encryptionService = module.get<EncryptionService>(EncryptionService);
-    p2pQuakeApi = module.get<P2pQuakeApi>(P2pQuakeApi);
     quakeHistoryRepository = module.get<QuakeHistoryRepository>(
       QuakeHistoryRepository,
     );
+
+    ws = new WebSocket(process.env.P2P_QUAKE_WS_URL);
+    (service as any).ws = ws;
+  });
+
+  afterEach(() => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.close();
+    }
   });
 
   describe('processQuakeHistory', () => {
     it('should process quake history and send notifications', async () => {
-      const mockQuakeHistory = [
-        {
-          id: '1',
-          earthquake: { time: '2023-01-01T00:00:00Z', maxScale: 40 },
-          points: [],
-        },
-      ];
+      const mockQuakeHistory: receiveP2pQuakeHistoryResponseDto = {
+        id: '1',
+        code: 551,
+        time: '2023-01-01T00:00:00Z',
+        issue: { time: '2023-01-01T00:00:00Z', type: IssueType.OTHER },
+        earthquake: { time: '2023-01-01T00:00:00Z', maxScale: 40 },
+        points: [
+          {
+            pref: '東京都',
+            addr: 'address',
+            isArea: false,
+            scale: PointsScale.SCALE40,
+          },
+        ],
+        comments: { freeFormComment: 'comment' },
+      };
       const mockUsers = [{ userId: 'user1', thresholdSeismicIntensity: 40 }];
       const mockFlexMessage = {
         type: 'flex',
@@ -85,26 +105,23 @@ describe('QuakeService', () => {
         contents: {},
       };
 
-      (p2pQuakeApi.fetchP2pQuakeHistory as jest.Mock).mockResolvedValue(
-        mockQuakeHistory,
-      );
       (convertToUnixTime as jest.Mock).mockReturnValue(1672531200);
       (getJstTime as jest.Mock).mockReturnValue(
         new Date('2023-01-01T00:00:00Z'),
       );
-      (isQuakeTimeValid as jest.Mock).mockResolvedValue(false);
+      (isQuakeTimeValid as jest.Mock).mockReturnValue(false);
       (quakeHistoryRepository.isQuakeIdExists as jest.Mock).mockResolvedValue(
         false,
       );
-      (extractPrefecturesByPoints as jest.Mock).mockResolvedValue(['東京都']);
+      (extractPrefecturesByPoints as jest.Mock).mockReturnValue(['東京都']);
       (userService.getUsersByPrefectures as jest.Mock).mockResolvedValue(
         mockUsers,
       );
-      (createMainQuakeMessage as jest.Mock).mockResolvedValue({});
-      (createSubQuakeMessage as jest.Mock).mockResolvedValue({});
-      (createFlexBubble as jest.Mock).mockResolvedValue({});
-      (createFlexMessage as jest.Mock).mockResolvedValue(mockFlexMessage);
-      (encryptionService.decrypt as jest.Mock).mockResolvedValue(
+      (createMainQuakeMessage as jest.Mock).mockReturnValue({});
+      (createSubQuakeMessage as jest.Mock).mockReturnValue({});
+      (createFlexBubble as jest.Mock).mockReturnValue({});
+      (createFlexMessage as jest.Mock).mockReturnValue(mockFlexMessage);
+      (encryptionService.decrypt as jest.Mock).mockReturnValue(
         'decryptedUserId',
       );
       (
@@ -114,9 +131,8 @@ describe('QuakeService', () => {
         undefined,
       );
 
-      await service.processQuakeHistory(1, 10, 0);
+      await service['processQuakeHistory'](mockQuakeHistory);
 
-      expect(p2pQuakeApi.fetchP2pQuakeHistory).toHaveBeenCalledWith(1, 10, 0);
       expect(userService.getUsersByPrefectures).toHaveBeenCalledWith([
         '東京都',
       ]);
@@ -125,31 +141,6 @@ describe('QuakeService', () => {
         'decryptedUserId',
         [mockFlexMessage, mockFlexMessage],
       );
-    });
-
-    it('should skip processing if quake history is not valid', async () => {
-      const mockQuakeHistory = [
-        {
-          id: '1',
-          earthquake: { time: '2023-01-01T00:00:00Z', maxScale: 30 },
-          points: [],
-        },
-      ];
-
-      (p2pQuakeApi.fetchP2pQuakeHistory as jest.Mock).mockResolvedValue(
-        mockQuakeHistory,
-      );
-      (convertToUnixTime as jest.Mock).mockReturnValue(1672531200);
-      (getJstTime as jest.Mock).mockReturnValue(
-        new Date('2023-01-01T00:00:00Z'),
-      );
-      (isQuakeTimeValid as jest.Mock).mockResolvedValue(true);
-
-      await service.processQuakeHistory(1, 10, 0);
-
-      expect(p2pQuakeApi.fetchP2pQuakeHistory).toHaveBeenCalledWith(1, 10, 0);
-      expect(userService.getUsersByPrefectures).not.toHaveBeenCalled();
-      expect(pushMessageService.pushMessage).not.toHaveBeenCalled();
     });
   });
 });
