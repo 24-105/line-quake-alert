@@ -25,9 +25,7 @@ describe('PushMessageService', () => {
     const texts: Message[] = [{ type: 'text', text: 'Hello' }];
     const pushMessageRequest = { to: userId, messages: texts };
 
-    (createPushMessageRequest as jest.Mock).mockResolvedValue(
-      pushMessageRequest,
-    );
+    (createPushMessageRequest as jest.Mock).mockReturnValue(pushMessageRequest);
     messageApi.pushMessage.mockResolvedValue(undefined);
 
     await pushMessageService.pushMessage(channelAccessToken, userId, texts);
@@ -45,9 +43,7 @@ describe('PushMessageService', () => {
     const texts: Message[] = [{ type: 'text', text: 'Hello' }];
     const pushMessageRequest = { to: userId, messages: texts };
 
-    (createPushMessageRequest as jest.Mock).mockResolvedValue(
-      pushMessageRequest,
-    );
+    (createPushMessageRequest as jest.Mock).mockReturnValue(pushMessageRequest);
     messageApi.pushMessage.mockRejectedValue(new Error('Push message failed'));
 
     await expect(
@@ -67,9 +63,7 @@ describe('PushMessageService', () => {
     const texts: Message[] = [{ type: 'text', text: 'Hello' }];
     const pushMessageRequest = { to: userId, messages: texts };
 
-    (createPushMessageRequest as jest.Mock).mockResolvedValue(
-      pushMessageRequest,
-    );
+    (createPushMessageRequest as jest.Mock).mockReturnValue(pushMessageRequest);
     messageApi.pushMessage.mockResolvedValue(undefined);
 
     await pushMessageService.pushMessage(channelAccessToken, userId, texts);
@@ -83,9 +77,7 @@ describe('PushMessageService', () => {
     const texts: Message[] = [{ type: 'text', text: 'Hello' }];
     const pushMessageRequest = { to: userId, messages: texts };
 
-    (createPushMessageRequest as jest.Mock).mockResolvedValue(
-      pushMessageRequest,
-    );
+    (createPushMessageRequest as jest.Mock).mockReturnValue(pushMessageRequest);
     messageApi.pushMessage.mockResolvedValue(undefined);
 
     await pushMessageService.pushMessage(channelAccessToken, userId, texts);

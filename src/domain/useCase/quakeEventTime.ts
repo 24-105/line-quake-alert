@@ -7,10 +7,10 @@ import { convertToUnixTime } from 'src/domain/useCase/date';
  * @param eventTime quake event time
  * @returns true: event time is over the threshold, false: event time is within the threshold
  */
-export const isEventTimeValid = async (
+export const isEventTimeValid = (
   unixTimeNow: number,
   eventTime: string,
-): Promise<boolean> => {
+): boolean => {
   const unixEventTime = convertToUnixTime(eventTime);
   return (
     unixTimeNow - unixEventTime >= EXPIRATION_TIME.QUAKE_HISTORY_VALID_TIME

@@ -18,7 +18,7 @@ describe('createPushMessageRequest', () => {
       customAggregationUnits: customAggregationUnits,
     };
 
-    const result = await createPushMessageRequest(
+    const result = createPushMessageRequest(
       userId,
       message,
       notificationDisabled,
@@ -39,7 +39,7 @@ describe('createPushMessageRequest', () => {
       customAggregationUnits: undefined,
     };
 
-    const result = await createPushMessageRequest(userId, message);
+    const result = createPushMessageRequest(userId, message);
 
     expect(result).toEqual(expectedRequest);
   });
@@ -56,7 +56,7 @@ describe('createPushMessageRequest', () => {
       customAggregationUnits: undefined,
     };
 
-    const result = await createPushMessageRequest(
+    const result = createPushMessageRequest(
       userId,
       message,
       notificationDisabled,
@@ -77,7 +77,7 @@ describe('createPushMessageRequest', () => {
       customAggregationUnits: customAggregationUnits,
     };
 
-    const result = await createPushMessageRequest(
+    const result = createPushMessageRequest(
       userId,
       message,
       undefined,

@@ -1,5 +1,5 @@
 import {
-  fetchP2pQuakeHistoryResponseDto,
+  receiveP2pQuakeHistoryResponseDto,
   QuakeHistoryPoints,
 } from 'src/application/dto/quakeHistoryDto';
 import { convertSeismicIntensityToString } from 'src/domain/useCase/seismicIntensity';
@@ -13,9 +13,9 @@ import { HTTP_URL } from 'src/config/constants/http';
  * @param history quake history
  * @returns flex message
  */
-export const createMainQuakeMessage = async (
-  history: fetchP2pQuakeHistoryResponseDto,
-): Promise<FlexBox> => {
+export const createMainQuakeMessage = (
+  history: receiveP2pQuakeHistoryResponseDto,
+): FlexBox => {
   return {
     type: 'box',
     layout: 'vertical',
@@ -198,9 +198,9 @@ export const createMainQuakeMessage = async (
  * @param points quake history points
  * @returns flex message
  */
-export const createSubQuakeMessage = async (
+export const createSubQuakeMessage = (
   points: QuakeHistoryPoints[],
-): Promise<FlexBox> => {
+): FlexBox => {
   const texts: { type: 'text'; text: string; margin: string }[] = [];
   for (const point of points) {
     const area = `${point.pref} ${point.addr}`;

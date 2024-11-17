@@ -11,12 +11,12 @@ import {
  * @param customAggregationUnits custom aggregation units
  * @returns push message request
  */
-export const createPushMessageRequest = async (
+export const createPushMessageRequest = (
   userId: string,
   message: Message[],
   notificationDisabled?: boolean,
   customAggregationUnits?: string[],
-): Promise<PushMessageRequest> => {
+): PushMessageRequest => {
   return {
     to: userId,
     messages: message,

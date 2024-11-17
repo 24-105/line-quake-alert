@@ -25,23 +25,23 @@ describe('EncryptionService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should encrypt text', async () => {
+  it('should encrypt text', () => {
     const text = 'plainText';
     const encryptedText = 'encryptedText';
-    (encrypt as jest.Mock).mockResolvedValue(encryptedText);
+    (encrypt as jest.Mock).mockReturnValue(encryptedText);
 
-    const result = await service.encrypt(text);
+    const result = service.encrypt(text);
 
     expect(encrypt).toHaveBeenCalledWith(text, mockKey, mockIv);
     expect(result).toBe(encryptedText);
   });
 
-  it('should decrypt text', async () => {
+  it('should decrypt text', () => {
     const encryptedText = 'encryptedText';
     const decryptedText = 'plainText';
-    (decrypt as jest.Mock).mockResolvedValue(decryptedText);
+    (decrypt as jest.Mock).mockReturnValue(decryptedText);
 
-    const result = await service.decrypt(encryptedText);
+    const result = service.decrypt(encryptedText);
 
     expect(decrypt).toHaveBeenCalledWith(encryptedText, mockKey);
     expect(result).toBe(decryptedText);

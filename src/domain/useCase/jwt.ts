@@ -12,12 +12,12 @@ import { JWT, JWT_FORMAT_COMPACT } from 'src/config/constants/jwt';
  * @param sub
  * @returns JWT
  */
-export const generateJwt = async (
+export const generateJwt = (
   privateKey: string,
   kid: string,
   iss: string,
   sub: string,
-): Promise<string> => {
+): string => {
   const header = {
     alg: SIGNATURE_ALGORITHM_RS256,
     typ: JWT,
@@ -33,13 +33,14 @@ export const generateJwt = async (
   };
 
   try {
-    return await jose.JWS.createSign(
+    return jose.JWS.createSign(
       { format: JWT_FORMAT_COMPACT, fields: header },
       JSON.parse(privateKey),
     )
       .update(JSON.stringify(payload))
       .final();
   } catch (err) {
+    console.error('Failed to generate JWT', err.stack);
     throw err;
   }
 };

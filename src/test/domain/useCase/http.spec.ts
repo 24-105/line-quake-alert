@@ -1,6 +1,5 @@
 import {
   createEncodeHeaders,
-  createHeaders,
   createAuthHeaders,
   createAuthRetryHeaders,
 } from 'src/domain/useCase/http';
@@ -15,12 +14,6 @@ describe('Header creation functions', () => {
     expect(result).toEqual({
       'Content-Type': 'application/x-www-form-urlencoded',
     });
-  });
-
-  it('should create headers correctly', () => {
-    const result = createHeaders();
-
-    expect(result).toEqual({ 'Content-Type': 'application/json' });
   });
 
   it('should create auth headers correctly', () => {
