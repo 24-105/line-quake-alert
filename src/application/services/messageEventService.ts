@@ -154,7 +154,7 @@ export class MessageEventService implements IMessageEventService {
       const correspondingMessage = createCorrespondingMessage(
         userProfile.displayName,
       );
-      const text = await createTextMessage(correspondingMessage);
+      const text = createTextMessage(correspondingMessage);
 
       await this.pushMessageService.pushMessage(channelAccessToken, userId, [
         text,

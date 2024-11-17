@@ -3,7 +3,7 @@ import {
   extractSeismicIntensity,
   extractPrefecturesByPoints,
 } from 'src/domain/useCase/extractText';
-import { fetchP2pQuakeHistoryResponseDto } from 'src/application/dto/quakeHistoryDto';
+import { receiveP2pQuakeHistoryResponseDto } from 'src/application/dto/quakeHistoryDto';
 import { IssueType } from 'src/domain/enum/quakeHistory/issueEnum';
 
 describe('extractText Tests', () => {
@@ -62,7 +62,7 @@ describe('extractText Tests', () => {
 
   describe('extractPrefecturesByPoints', () => {
     it('should extract prefectures by points correctly', async () => {
-      const history: fetchP2pQuakeHistoryResponseDto = {
+      const history: receiveP2pQuakeHistoryResponseDto = {
         id: 'test',
         code: 551,
         time: '2024-10-01 10:00:00',
@@ -103,7 +103,7 @@ describe('extractText Tests', () => {
     });
 
     it('should return an empty array if no points match the criteria', async () => {
-      const history: fetchP2pQuakeHistoryResponseDto = {
+      const history: receiveP2pQuakeHistoryResponseDto = {
         id: 'test',
         code: 551,
         time: '2023-10-01 10:00:00',

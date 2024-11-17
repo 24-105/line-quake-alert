@@ -28,10 +28,13 @@ export class PushMessageService implements IPushMessageService {
     this.logger.log(`${LOG_MESSAGES.PUSH_MESSAGE}: ${userId}`);
 
     try {
-      const pushMessageRequest = await createPushMessageRequest(userId, texts);
+      const pushMessageRequest = createPushMessageRequest(userId, texts);
       await this.messageApi.pushMessage(channelAccessToken, pushMessageRequest);
     } catch (err) {
-      this.logger.error(`${LOG_MESSAGES.PUSH_MESSAGE_FAILED}: ${userId}`);
+      this.logger.error(
+        `${LOG_MESSAGES.PUSH_MESSAGE_FAILED}: ${userId}`,
+        err.stack,
+      );
       throw err;
     }
   }

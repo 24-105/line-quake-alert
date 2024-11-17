@@ -29,7 +29,7 @@ export class UserService implements IUserService {
     const prefectureNumbers = prefectures.map((prefecture) => {
       return convertPrefectureToNumber(prefecture);
     });
-    return await this.userRepository.getUsersByPrefectures(prefectureNumbers);
+    return this.userRepository.getUsersByPrefectures(prefectureNumbers);
   }
 
   /**
@@ -39,7 +39,7 @@ export class UserService implements IUserService {
   async ensureUserIdExists(userId: string): Promise<void> {
     this.logger.log(`${LOG_MESSAGES.ENSURE_USER_ID_EXISTS}: ${userId}`);
 
-    const encryptedUserId = await this.encryptionService.encrypt(userId);
+    const encryptedUserId = this.encryptionService.encrypt(userId);
     const isValidUser =
       await this.userRepository.isUserIdExists(encryptedUserId);
 
@@ -53,7 +53,7 @@ export class UserService implements IUserService {
    * @param userId user id
    */
   async deleteUser(userId: string): Promise<void> {
-    const encryptedUserId = await this.encryptionService.encrypt(userId);
+    const encryptedUserId = this.encryptionService.encrypt(userId);
     await this.userRepository.deleteUser(encryptedUserId);
   }
 
@@ -66,7 +66,7 @@ export class UserService implements IUserService {
     userId: string,
     prefecture: string,
   ): Promise<void> {
-    const encryptedUserId = await this.encryptionService.encrypt(userId);
+    const encryptedUserId = this.encryptionService.encrypt(userId);
     await this.userRepository.updateUserPrefecture(
       encryptedUserId,
       convertPrefectureToNumber(prefecture),
@@ -82,7 +82,7 @@ export class UserService implements IUserService {
     userId: string,
     seismicIntensity: string,
   ): Promise<void> {
-    const encryptedUserId = await this.encryptionService.encrypt(userId);
+    const encryptedUserId = this.encryptionService.encrypt(userId);
     await this.userRepository.updateUserSeismicIntensity(
       encryptedUserId,
       convertSeismicIntensityToNumber(seismicIntensity) ?? PointsScale.SCALE40,

@@ -23,14 +23,14 @@ describe('generateJwt', () => {
   const iss = 'test-iss';
   const sub = 'test-sub';
 
-  it('should generate a JWT', async () => {
+  it('should generate a JWT', () => {
     const mockSign = {
       update: jest.fn().mockReturnThis(),
-      final: jest.fn().mockResolvedValue('mocked-jwt'),
+      final: jest.fn().mockReturnValue('mocked-jwt'),
     };
     (jose.JWS.createSign as jest.Mock).mockReturnValue(mockSign);
 
-    const result = await generateJwt(privateKey, kid, iss, sub);
+    const result = generateJwt(privateKey, kid, iss, sub);
 
     expect(result).toBe('mocked-jwt');
   });
@@ -42,7 +42,7 @@ describe('generateJwt', () => {
     };
     (jose.JWS.createSign as jest.Mock).mockReturnValue(mockSign);
 
-    await expect(generateJwt(privateKey, kid, iss, sub)).rejects.toThrow(
+    expect(generateJwt(privateKey, kid, iss, sub)).rejects.toThrow(
       'Signing failed',
     );
   });

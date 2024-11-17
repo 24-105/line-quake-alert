@@ -16,7 +16,7 @@ export class EncryptionService implements IEncryptionService {
    * @param text text to encrypt
    * @returns encrypted text
    */
-  async encrypt(text: string): Promise<string> {
+  encrypt(text: string): string {
     return encrypt(text, this.key, this.iv);
   }
 
@@ -25,7 +25,7 @@ export class EncryptionService implements IEncryptionService {
    * @param text text to decrypt
    * @returns decrypted text
    */
-  async decrypt(text: string): Promise<string> {
+  decrypt(text: string): string {
     return decrypt(text, this.key);
   }
 }

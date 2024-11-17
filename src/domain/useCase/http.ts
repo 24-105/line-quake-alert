@@ -9,16 +9,6 @@ export const createEncodeHeaders = (): Record<string, string> => {
 };
 
 /**
- * Create headers for the request
- * @returns Headers object
- */
-export const createHeaders = (): Record<string, string> => {
-  return {
-    'Content-Type': 'application/json',
-  };
-};
-
-/**
  * Create headers object with channel access token
  * @param channelAccessToken Channel access token
  * @returns Headers object
