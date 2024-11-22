@@ -14,8 +14,7 @@ export const encrypt = (text: string, key: Buffer, iv: Buffer): string => {
     key,
     iv,
   );
-  let encrypted = cipher.update(text, UTF8, HEX);
-  encrypted += cipher.final(HEX);
+  const encrypted = cipher.update(text, UTF8, HEX) + cipher.final(HEX);
   const authTag = cipher.getAuthTag().toString(HEX);
   return `${iv.toString(HEX)}:${encrypted}:${authTag}`;
 };
@@ -36,7 +35,7 @@ export const decrypt = (text: string, key: Buffer): string => {
     ivBuffer,
   );
   decipher.setAuthTag(authTagBuffer);
-  let decrypted = decipher.update(encryptedText, HEX, UTF8);
-  decrypted += decipher.final(UTF8);
+  const decrypted =
+    decipher.update(encryptedText, HEX, UTF8) + decipher.final(UTF8);
   return decrypted;
 };
