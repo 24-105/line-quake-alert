@@ -1,4 +1,6 @@
 export const LOG_MESSAGES = {
+  JSON_PARSE_FAILED: 'Failed to parse JSON',
+  HASH_GENERATION_FAILED: 'Failed to generate hash',
   START_PROCESS_CHANNEL_ACCESS_TOKEN_BATCH:
     'Start process channel access token batch',
   PROCESS_CHANNEL_ACCESS_TOKEN_BATCH_SUCCESS:
