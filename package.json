@@ -22,9 +22,8 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.687.0",
-    "@aws-sdk/lib-dynamodb": "^3.679.0",
-    "@aws-sdk/util-dynamodb": "^3.670.0",
+    "@aws-sdk/client-dynamodb": "^3.693.0",
+    "@aws-sdk/lib-dynamodb": "^3.693.0",
     "@line/bot-sdk": "^9.4.1",
     "@nestjs/axios": "^3.1.0",
     "@nestjs/class-validator": "^0.13.4",
@@ -58,8 +57,8 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.9.0",
     "@types/supertest": "^6.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.13.0",
-    "@typescript-eslint/parser": "^8.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
     "eslint": "^9.13.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.0",
