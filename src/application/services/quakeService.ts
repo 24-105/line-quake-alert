@@ -82,7 +82,15 @@ export class QuakeService {
    * @param data Quake data
    */
   private handleQuakeData(data: WebSocket.Data): void {
-    const parsedData = JSON.parse(data.toString());
+    const parsedData = ((): any => {
+      try {
+        return JSON.parse(data.toString());
+      } catch (err) {
+        this.logger.error(LOG_MESSAGES.JSON_PARSE_FAILED, err.stack);
+        throw err;
+      }
+    })();
+
     if (parsedData.code === 551) {
       const history: receiveP2pQuakeHistoryResponseDto = parsedData;
       this.processQuakeHistory(history);

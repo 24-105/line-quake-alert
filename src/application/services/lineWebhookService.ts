@@ -29,10 +29,18 @@ export class LineWebhookService implements ILineWebhookService {
    */
   verifySignature(body: any, signature: string): boolean {
     const channelSecret = process.env.LINE_QUALE_QUICK_ALERT_SECRET;
-    const hash = crypto
-      .createHmac(ENCRYPTION_HASH_ALGORITHM_SHA256, channelSecret)
-      .update(JSON.stringify(body))
-      .digest(BASE64);
+    const hash = ((): any => {
+      try {
+        crypto
+          .createHmac(ENCRYPTION_HASH_ALGORITHM_SHA256, channelSecret)
+          .update(JSON.stringify(body))
+          .digest(BASE64);
+      } catch (err) {
+        this.logger.error(LOG_MESSAGES.HASH_GENERATION_FAILED, err.stack);
+        throw err;
+      }
+    })();
+
     return hash === signature;
   }
 
