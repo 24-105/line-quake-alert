@@ -31,7 +31,7 @@ export class LineWebhookService implements ILineWebhookService {
     const channelSecret = process.env.LINE_QUALE_QUICK_ALERT_SECRET;
     const hash = ((): any => {
       try {
-        crypto
+        return crypto
           .createHmac(ENCRYPTION_HASH_ALGORITHM_SHA256, channelSecret)
           .update(JSON.stringify(body))
           .digest(BASE64);
