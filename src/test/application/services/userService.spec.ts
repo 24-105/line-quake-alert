@@ -9,8 +9,8 @@ import { PointsScale } from 'src/domain/enum/quakeHistory/pointsEnum';
 
 describe('UserService', () => {
   let userService: UserService;
-  let userRepository: UserRepository;
   let encryptionService: EncryptionService;
+  let userRepository: UserRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

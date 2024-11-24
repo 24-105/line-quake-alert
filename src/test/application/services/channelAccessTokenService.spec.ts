@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ChannelAccessTokenService } from 'src/application/services/channelAccessTokenService';
+import { EncryptionService } from 'src/application/services/encryptionService';
 import { FILE_PATH } from 'src/config/constants/filePath';
+import { decrypt } from 'src/domain/useCase/encryption';
 import { readKeyFile } from 'src/domain/useCase/file';
 import { generateJwt } from 'src/domain/useCase/jwt';
 import { ChannelAccessTokenApi } from 'src/infrastructure/api/line/channelAccessTokenApi';
@@ -11,6 +13,7 @@ jest.mock('src/domain/useCase/jwt');
 
 describe('ChannelAccessTokenService', () => {
   let service: ChannelAccessTokenService;
+  let encryptionService: EncryptionService;
   let channelAccessTokenApi: ChannelAccessTokenApi;
   let channelAccessTokenRepository: ChannelAccessTokenRepository;
 
@@ -32,10 +35,18 @@ describe('ChannelAccessTokenService', () => {
             putChannelAccessToken: jest.fn(),
           },
         },
+        {
+          provide: EncryptionService,
+          useValue: {
+            encrypt: jest.fn(),
+            decrypt: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     service = module.get<ChannelAccessTokenService>(ChannelAccessTokenService);
+    encryptionService = module.get<EncryptionService>(EncryptionService);
     channelAccessTokenApi = module.get<ChannelAccessTokenApi>(
       ChannelAccessTokenApi,
     );
@@ -78,6 +89,9 @@ describe('ChannelAccessTokenService', () => {
       jest
         .spyOn(service as any, 'verifyChannelAccessToken')
         .mockResolvedValue(true);
+      jest
+        .spyOn(encryptionService, 'decrypt')
+        .mockReturnValue('decryptedToken');
 
       const result = await service.getLatestChannelAccessToken('channelIss');
 
@@ -85,7 +99,8 @@ describe('ChannelAccessTokenService', () => {
         'channelIss',
       );
       expect(service['verifyChannelAccessToken']).toHaveBeenCalledWith('token');
-      expect(result).toBe('token');
+      expect(encryptionService.decrypt).toHaveBeenCalledWith('token');
+      expect(result).toBe('decryptedToken');
     });
 
     it('should refresh the token if invalid', async () => {
@@ -117,13 +132,17 @@ describe('ChannelAccessTokenService', () => {
       jest
         .spyOn(channelAccessTokenRepository, 'getChannelAccessToken')
         .mockResolvedValue('token');
+      jest
+        .spyOn(encryptionService, 'decrypt')
+        .mockReturnValue('decryptedToken');
 
       const result = await service['getChannelAccessToken']('channelIss');
 
       expect(
         channelAccessTokenRepository.getChannelAccessToken,
       ).toHaveBeenCalledWith('channelIss');
-      expect(result).toBe('token');
+      expect(encryptionService.decrypt).toHaveBeenCalledWith('token');
+      expect(result).toBe('decryptedToken');
     });
 
     it('should verify channel access token', async () => {

@@ -4,12 +4,13 @@ import { ChannelAccessTokenBatchJob } from 'src/application/jobs/channelAccessTo
 import { ChannelAccessTokenService } from 'src/application/services/channelAccessTokenService';
 import { ChannelAccessTokenApi } from 'src/infrastructure/api/line/channelAccessTokenApi';
 import { ChannelAccessTokenRepository } from 'src/infrastructure/repositories/channelAccessTokenRepository';
+import { EncryptModule } from 'src/modules/encryptionModule';
 
 /**
  * Channel access token module
  */
 @Module({
-  imports: [HttpModule],
+  imports: [EncryptModule, HttpModule],
   providers: [
     ChannelAccessTokenBatchJob,
     ChannelAccessTokenService,

@@ -7,6 +7,7 @@ import { readKeyFile } from 'src/domain/useCase/file';
 import { LOG_MESSAGES } from 'src/config/logMessages';
 import { FILE_PATH } from 'src/config/constants/filePath';
 import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
+import { EncryptionService } from './encryptionService';
 
 /**
  * Channel access token service
@@ -16,6 +17,7 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
   private readonly logger = new Logger(ChannelAccessTokenService.name);
 
   constructor(
+    private readonly encryptionService: EncryptionService,
     private readonly channelAccessTokenApi: ChannelAccessTokenApi,
     private readonly channelAccessTokenRepository: ChannelAccessTokenRepository,
   ) {}
@@ -53,7 +55,7 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
       await this.verifyChannelAccessToken(channelAccessToken);
 
     if (isValidToken) {
-      return channelAccessToken;
+      return this.encryptionService.decrypt(channelAccessToken);
     }
 
     return this.refreshChannelAccessToken(channelIss);
@@ -65,7 +67,9 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
    * @returns channel access token
    */
   private async getChannelAccessToken(channelIss: string): Promise<string> {
-    return this.channelAccessTokenRepository.getChannelAccessToken(channelIss);
+    const channelAccessToken =
+      await this.channelAccessTokenRepository.getChannelAccessToken(channelIss);
+    return this.encryptionService.decrypt(channelAccessToken);
   }
 
   /**
@@ -145,9 +149,13 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
         const tokenResponse =
           await this.channelAccessTokenApi.fetchChannelAccessToken(jwt);
 
+        const encryptedAccessToken = this.encryptionService.encrypt(
+          tokenResponse.access_token,
+        );
+
         await this.channelAccessTokenRepository.putChannelAccessToken(
           iss,
-          tokenResponse.access_token,
+          encryptedAccessToken,
           tokenResponse.key_id,
           ttl,
         );
