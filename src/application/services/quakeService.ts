@@ -23,6 +23,7 @@ import { EncryptionService } from './encryptionService';
 import { LOG_MESSAGES } from 'src/config/logMessages';
 import Bottleneck from 'bottleneck';
 import { WebSocket } from 'ws';
+import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
 
 /**
  * Quake service
@@ -195,8 +196,10 @@ export class QuakeService {
    * @param quakeId Quake id
    */
   private async saveQuakeId(quakeId: string): Promise<void> {
+    const ttl =
+      Math.floor(Date.now() / 1000) + EXPIRATION_TIME.QUAKE_ID_VALID_TIME;
     try {
-      await this.quakeHistoryRepository.putQuakeId(quakeId);
+      await this.quakeHistoryRepository.putQuakeId(quakeId, ttl);
     } catch (err) {
       this.logger.error(
         `${LOG_MESSAGES.PUT_QUAKE_ID_FAILED}: ${quakeId}`,

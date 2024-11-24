@@ -6,6 +6,7 @@ export interface IChannelAccessTokenRepository {
     channelId: string,
     channelAccessToken: string,
     keyId: string,
+    ttl: number,
   ): Promise<void>;
   getChannelAccessToken(channelId: string): Promise<string>;
 }

@@ -3,5 +3,5 @@
  */
 export interface IQuakeHistoryRepository {
   isQuakeIdExists(quakeId: string): Promise<boolean>;
-  putQuakeId(quakeId: string): Promise<void>;
+  putQuakeId(quakeId: string, ttl: number): Promise<void>;
 }

@@ -6,6 +6,7 @@ import { ChannelAccessTokenApi } from 'src/infrastructure/api/line/channelAccess
 import { readKeyFile } from 'src/domain/useCase/file';
 import { LOG_MESSAGES } from 'src/config/logMessages';
 import { FILE_PATH } from 'src/config/constants/filePath';
+import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
 
 /**
  * Channel access token service
@@ -135,6 +136,10 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
   private async updateChannelAccessTokens(
     jwtList: { jwt: string; iss: string }[],
   ): Promise<void> {
+    const ttl =
+      Math.floor(Date.now() / 1000) +
+      EXPIRATION_TIME.CHANNEL_ACCESS_TOKEN_VALID_TIME;
+
     for (const { jwt, iss } of jwtList) {
       try {
         const tokenResponse =
@@ -144,6 +149,7 @@ export class ChannelAccessTokenService implements IChannelAccessTokenService {
           iss,
           tokenResponse.access_token,
           tokenResponse.key_id,
+          ttl,
         );
       } catch (err) {
         this.logger.error(

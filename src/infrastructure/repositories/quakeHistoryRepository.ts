@@ -7,7 +7,6 @@ import {
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Logger } from '@nestjs/common';
 import { LOG_MESSAGES } from 'src/config/logMessages';
-import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
 import { TABLE_NAME } from 'src/config/constants/tableName';
 
 /**
@@ -62,12 +61,12 @@ export class QuakeHistoryRepository implements IQuakeHistoryRepository {
    * Put quake id in the table
    * @param quakeId quake id
    */
-  async putQuakeId(quakeId: string): Promise<void> {
+  async putQuakeId(quakeId: string, ttl: number): Promise<void> {
     const params = {
       TableName: this.tableName,
       Item: {
         quakeId: quakeId,
-        TTL: EXPIRATION_TIME.QUAKE_ID_VALID_TIME,
+        TTL: ttl,
       },
     };
 

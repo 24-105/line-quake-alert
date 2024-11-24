@@ -7,7 +7,6 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { Logger } from '@nestjs/common';
 import { IChannelAccessTokenRepository } from 'src/domain/interfaces/repositories/channelAccessTokenRepository';
 import { LOG_MESSAGES } from 'src/config/logMessages';
-import { EXPIRATION_TIME } from 'src/config/constants/expirationTime';
 import { TABLE_NAME } from 'src/config/constants/tableName';
 
 /**
@@ -47,6 +46,7 @@ export class ChannelAccessTokenRepository
     channelId: string,
     channelAccessToken: string,
     keyId: string,
+    ttl: number,
   ): Promise<void> {
     const params = {
       TableName: this.tableName,
@@ -54,7 +54,7 @@ export class ChannelAccessTokenRepository
         channelId: channelId,
         channelAccessToken: channelAccessToken,
         keyId: keyId,
-        TTL: EXPIRATION_TIME.CHANNEL_ACCESS_TOKEN_VALID_TIME,
+        TTL: ttl,
       },
     };
 
