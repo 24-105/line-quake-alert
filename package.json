@@ -22,7 +22,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.693.0",
+    "@aws-sdk/client-dynamodb": "^3.705.0",
     "@aws-sdk/lib-dynamodb": "^3.693.0",
     "@line/bot-sdk": "^9.4.1",
     "@nestjs/axios": "^3.1.0",
